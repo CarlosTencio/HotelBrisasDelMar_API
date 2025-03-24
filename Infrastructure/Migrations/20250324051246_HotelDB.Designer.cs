@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250321191010_HotelDB")]
+    [Migration("20250324051246_HotelDB")]
     partial class HotelDB
     {
         /// <inheritdoc />
@@ -161,6 +161,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Page");
                 });
 
+            modelBuilder.Entity("Core.Entities.PageImage", b =>
+                {
+                    b.Property<int>("PageID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ImageID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PageID", "ImageID");
+
+                    b.HasIndex("ImageID");
+
+                    b.ToTable("PageImage");
+                });
+
             modelBuilder.Entity("Core.Entities.Promotion", b =>
                 {
                     b.Property<int>("PromotionID")
@@ -289,6 +304,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("Core.Entities.PageImage", b =>
+                {
+                    b.HasOne("Core.Entities.Image", "Image")
+                        .WithMany("PageImages")
+                        .HasForeignKey("ImageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Page", "Page")
+                        .WithMany("PageImages")
+                        .HasForeignKey("PageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Page");
+                });
+
             modelBuilder.Entity("Core.Entities.Room", b =>
                 {
                     b.HasOne("Core.Entities.RoomType", "RoomType")
@@ -298,6 +332,16 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("RoomType");
+                });
+
+            modelBuilder.Entity("Core.Entities.Image", b =>
+                {
+                    b.Navigation("PageImages");
+                });
+
+            modelBuilder.Entity("Core.Entities.Page", b =>
+                {
+                    b.Navigation("PageImages");
                 });
 #pragma warning restore 612, 618
         }

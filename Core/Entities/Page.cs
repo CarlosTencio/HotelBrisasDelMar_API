@@ -15,5 +15,6 @@ namespace Core.Entities
         public int PageID { get; set; }
         public string PageTitle { get; set; }
         public string PageContent { get; set; }
+        public ICollection<PageImage> PageImages { get; set; } = new List<PageImage>();
     }
 }

@@ -148,6 +148,30 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PageImage",
+                columns: table => new
+                {
+                    PageID = table.Column<int>(type: "int", nullable: false),
+                    ImageID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PageImage", x => new { x.PageID, x.ImageID });
+                    table.ForeignKey(
+                        name: "FK_PageImage_Image_ImageID",
+                        column: x => x.ImageID,
+                        principalTable: "Image",
+                        principalColumn: "PageImageID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PageImage_Page_PageID",
+                        column: x => x.PageID,
+                        principalTable: "Page",
+                        principalColumn: "PageID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Room",
                 columns: table => new
                 {
@@ -175,6 +199,11 @@ namespace Infrastructure.Migrations
                 column: "CustomerID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PageImage_ImageID",
+                table: "PageImage",
+                column: "ImageID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Room_RoomTypeId",
                 table: "Room",
                 column: "RoomTypeId");
@@ -190,10 +219,7 @@ namespace Infrastructure.Migrations
                 name: "Booking");
 
             migrationBuilder.DropTable(
-                name: "Image");
-
-            migrationBuilder.DropTable(
-                name: "Page");
+                name: "PageImage");
 
             migrationBuilder.DropTable(
                 name: "Promotion");
@@ -206,6 +232,12 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Image");
+
+            migrationBuilder.DropTable(
+                name: "Page");
 
             migrationBuilder.DropTable(
                 name: "RoomType");
