@@ -14,5 +14,6 @@ namespace Core.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PageImageID { get; set; }
         public string ImagePath { get; set; }
+        public ICollection<PageImage> PageImages { get; set; } = new List<PageImage>();
     }
 }

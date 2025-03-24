@@ -16,10 +16,21 @@ namespace Infrastructure.Persistence
         public DbSet<Page> Page { get; set; }
         public DbSet<Promotion> Promotion { get; set; }
         public DbSet<Season> Season { get; set; }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-        //    modelBuilder.Entity<Booking>().ToTable("Bookings"); // Asignar el nombre de la tabla
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PageImage>()
+                .HasKey(pi => new { pi.PageID, pi.ImageID });
+
+            // Opcional: Configurar las relaciones
+            modelBuilder.Entity<PageImage>()
+                .HasOne(pi => pi.Page)
+                .WithMany(p => p.PageImages)
+                .HasForeignKey(pi => pi.PageID);
+
+            modelBuilder.Entity<PageImage>()
+                .HasOne(pi => pi.Image)
+                .WithMany(i => i.PageImages)
+                .HasForeignKey(pi => pi.ImageID);
+        }
     }
 }
