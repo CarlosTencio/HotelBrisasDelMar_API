@@ -17,7 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IPageRepository, PageRepository>();
 // Registrar servicios que usan esos repositorios
 builder.Services.AddScoped<IPageService, PageService>();
-
+builder.Services.AddScoped<IAdRepository, AdRepository>();
+builder.Services.AddScoped<IAdService, AdService>();
 
 // Configurar Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -28,6 +29,13 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseCors("AllowOrigin");
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 
 // Configurar Swagger en entorno de desarrollo
 if (app.Environment.IsDevelopment())
