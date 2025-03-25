@@ -3,7 +3,7 @@
 --VALUES ('Página de inicio', 'Bienvenido a nuestra web. Este es el contenido de la página principal.');
 
 --INSERT INTO Page (PageTitle, PageContent)
---VALUES ('Sobre nosotros', 'Somos una empresa dedicada al desarrollo de software.');
+--VALUES ('Sobre nosotros', 'En Hotel Brisas del Mar, nos especializamos en ofrecer una experiencia única y acogedora para nuestros huéspedes. Ubicado en Puerto viejo, Limón, nuestro hotel combina confort, elegancia y hospitalidad excepcional para garantizar una estadía inolvidable. Desde el momento en que cruzas nuestras puertas, te recibimos con un ambiente cálido y un servicio personalizado. Nuestras habitaciones están diseñadas para brindar el máximo confort, con comodidades modernas y detalles que hacen la diferencia. Además, ofrecemos una amplia gama de servicios, incluyendo restaurante de alta cocina, spa, piscina y acceso a las principales atracciones de la zona. Ya sea que viajes por negocios o placer, nuestro compromiso es hacer que tu estancia sea inigualable. ¡Esperamos darte la bienvenida pronto y hacer de tu visita una experiencia inolvidable!.');
 
 --INSERT INTO Page (PageTitle, PageContent)
 --VALUES ('Contacto', 'Puedes contactarnos en info@ejemplo.com o llamando al +123456789.');
