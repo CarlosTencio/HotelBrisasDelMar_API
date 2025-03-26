@@ -49,3 +49,20 @@
 --END
 
 --EXEC GetPagesWithImages
+
+CREATE PROCEDURE sp_get_page_for_title
+    @PageTitle NVARCHAR(50)
+AS
+BEGIN
+    SELECT 
+        p.PageID,
+        p.PageTitle,
+        p.PageContent,
+        i.ImagePath 
+    FROM [dbo].[Page] p
+    JOIN [dbo].[PageImage] pi ON p.PageID = pi.PageId
+    JOIN [dbo].[Image] i ON pi.ImageId = i.PageImageId
+    WHERE p.PageTitle = @PageTitle; 
+END;
+
+exec sp_get_page_for_title 'Facilidades';

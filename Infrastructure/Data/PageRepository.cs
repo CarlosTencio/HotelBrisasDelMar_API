@@ -67,5 +67,43 @@ namespace Infrastructure.Data
 
             return pageDictionary.Values.ToList();
         }
+
+        public async Task<List<Page>> GetOnePageWithImages(string facilities)
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            var pageDictionary = new Dictionary<int, Page>();
+
+                        await connection.QueryAsync<Page, Image, Page>(
+                 "sp_get_facilities",
+                 (page, image) =>
+                 {
+                     if (!pageDictionary.TryGetValue(page.PageID, out var existingPage))
+                     {
+                         existingPage = page;
+                         existingPage.PageImages = new List<PageImage>();
+                         pageDictionary.Add(existingPage.PageID, existingPage);
+                     }
+
+                     if (image != null && !string.IsNullOrEmpty(image.ImagePath))
+                     {
+                         existingPage.PageImages.Add(new PageImage
+                         {
+                             PageID = page.PageID,
+                             Page = existingPage,
+                             ImageID = image.PageImageID,
+                             Image = image
+                         });
+                     }
+
+                     return existingPage;
+                 },
+                 param: new { PageTitle = facilities },
+                 splitOn: "ImagePath",
+                 commandType: CommandType.StoredProcedure
+             );
+            return pageDictionary.Values.ToList();
+        }
     }
 }
