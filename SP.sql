@@ -50,3 +50,100 @@
 
 --EXEC GetPagesWithImages
 
+
+--CREATE PROCEDURE GetMainAds
+--AS
+--BEGIN
+--	Select AdID, Name, Img, ImgUrl 
+--	from [dbo].[Ad]
+--	Where IsActive = 1
+--	AND (GETDATE() BETWEEN [StartDate] AND [EndDate])
+--END
+
+--exec GetMainAds
+
+---- Insertar anuncio de Coca-Cola (con fecha de inicio desde hoy)
+--INSERT INTO [dbo].[Ad] ([Name], [StartDate], [EndDate], [IsActive], [Img], [ImgUrl])
+--VALUES 
+--('Coca-Cola Promoción Verano', 
+-- GETDATE(), -- Fecha de inicio desde hoy
+-- DATEADD(MONTH, 3, GETDATE()), -- Fecha de fin dentro de 3 meses
+-- 1, 
+-- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-2.jpg', 
+-- 'https://www.coca-cola.com');
+
+---- Insertar anuncio de McDonald's (con fecha de inicio desde hoy)
+--INSERT INTO [dbo].[Ad] ([Name], [StartDate], [EndDate], [IsActive], [Img], [ImgUrl])
+--VALUES 
+--('McDonalds Promoción Big Mac', 
+-- GETDATE(), -- Fecha de inicio desde hoy
+-- DATEADD(MONTH, 3, GETDATE()), -- Fecha de fin dentro de 3 meses
+-- 1, 
+-- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-5.jpg', 
+-- 'https://www.mcdonalds.com');
+
+---- Insertar anuncio de KFC (con fecha de inicio desde hoy)
+--INSERT INTO [dbo].[Ad] ([Name], [StartDate], [EndDate], [IsActive], [Img], [ImgUrl])
+--VALUES 
+--('KFC Oferta Especial Combo Familiar', 
+-- GETDATE(), -- Fecha de inicio desde hoy
+-- DATEADD(MONTH, 3, GETDATE()), -- Fecha de fin dentro de 3 meses
+-- 1, 
+-- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-4.jpg', 
+-- 'https://www.kfc.com');
+
+--CREATE PROCEDURE GetMainPromotions
+--AS
+--BEGIN
+--SELECT [PromotionID],[PromotionName],[Img]
+--FROM [dbo].[Promotion]
+--WHERE IsActive = 1
+--AND (GETDATE() BETWEEN [StartDate] AND [EndDate])
+--END
+
+--EXEC GetMainPromotions
+
+--insertar ejemplos para promociones
+--INSERT INTO [dbo].[Promotion] ([PromotionName], [StartDate], [EndDate], [IsActive], [Percent], [Img])
+--VALUES 
+--('Coca-Cola Promoción Verano', 
+-- GETDATE(), -- Fecha de inicio desde hoy
+-- DATEADD(MONTH, 3, GETDATE()), -- Fecha de fin dentro de 3 meses
+-- 1, 
+-- 15, -- Descuento aleatorio
+-- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-2.jpg');
+
+--INSERT INTO [dbo].[Promotion] ([PromotionName], [StartDate], [EndDate], [IsActive], [Percent], [Img])
+--VALUES 
+--('McDonalds Promoción Big Mac', 
+-- GETDATE(), -- Fecha de inicio desde hoy
+-- DATEADD(MONTH, 3, GETDATE()), -- Fecha de fin dentro de 3 meses
+-- 1, 
+-- 20, -- Descuento aleatorio
+-- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-5.jpg');
+
+--INSERT INTO [dbo].[Promotion] ([PromotionName], [StartDate], [EndDate], [IsActive], [Percent], [Img])
+--VALUES 
+--('KFC Oferta Especial Combo Familiar', 
+-- GETDATE(), -- Fecha de inicio desde hoy
+-- DATEADD(MONTH, 3, GETDATE()), -- Fecha de fin dentro de 3 meses
+-- 1, 
+-- 25, -- Descuento aleatorio
+-- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-4.jpg');
+
+--CREATE PROCEDURE sp_get_page_for_title
+--    @PageTitle NVARCHAR(50)
+--AS
+--BEGIN
+--    SELECT 
+--        p.PageID,
+--        p.PageTitle,
+--        p.PageContent,
+--        i.ImagePath 
+--    FROM [dbo].[Page] p
+--    JOIN [dbo].[PageImage] pi ON p.PageID = pi.PageId
+--    JOIN [dbo].[Image] i ON pi.ImageId = i.PageImageId
+--    WHERE p.PageTitle = @PageTitle; 
+--END;
+
+--exec sp_get_page_for_title 'Facilidades';
