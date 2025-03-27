@@ -11,6 +11,7 @@ namespace Hotel_API.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+
     public class PageController : ControllerBase
     {
         private readonly IPageService _pageService;

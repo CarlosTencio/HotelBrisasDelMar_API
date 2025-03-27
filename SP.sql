@@ -48,7 +48,7 @@
 --    LEFT JOIN Image i ON pi.ImageID = i.PageImageID
 --END
 
---EXEC GetPagesWithImages
+EXEC GetPagesWithImages
 
 
 --CREATE PROCEDURE GetMainAds
@@ -60,7 +60,7 @@
 --	AND (GETDATE() BETWEEN [StartDate] AND [EndDate])
 --END
 
---exec GetMainAds
+exec GetMainAds
 
 ---- Insertar anuncio de Coca-Cola (con fecha de inicio desde hoy)
 --INSERT INTO [dbo].[Ad] ([Name], [StartDate], [EndDate], [IsActive], [Img], [ImgUrl])
@@ -101,7 +101,7 @@
 --AND (GETDATE() BETWEEN [StartDate] AND [EndDate])
 --END
 
---EXEC GetMainPromotions
+EXEC GetMainPromotions
 
 --insertar ejemplos para promociones
 --INSERT INTO [dbo].[Promotion] ([PromotionName], [StartDate], [EndDate], [IsActive], [Percent], [Img])
@@ -131,7 +131,7 @@
 -- 25, -- Descuento aleatorio
 -- 'https://res.cloudinary.com/dl2vh2h4h/image/upload/v1742841420/cld-sample-4.jpg');
 
---CREATE PROCEDURE sp_get_page_for_title
+--CREATE PROCEDURE sp_get_facilities
 --    @PageTitle NVARCHAR(50)
 --AS
 --BEGIN
@@ -146,4 +146,4 @@
 --    WHERE p.PageTitle = @PageTitle; 
 --END;
 
---exec sp_get_page_for_title 'Facilidades';
+--exec sp_get_facilities 'Facilidades';
