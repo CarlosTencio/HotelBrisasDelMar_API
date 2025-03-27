@@ -36,5 +36,21 @@ namespace Hotel_API.Controllers
             }
 
         }
+        [HttpGet]
+        [Route("getPageForTittle")]
+        public async Task<ActionResult<IEnumerable<PageDTO>>> getPageForTittle(string facilities)
+        {
+            try
+            {
+                var pages = await _pageService.GetOnePageWithImages(facilities);
+                return Ok(pages);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"Ocurrió un error al obtener las páginas: {ex.Message}");
+            }
+        }
     }
 }

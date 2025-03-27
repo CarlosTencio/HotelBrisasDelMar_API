@@ -10,5 +10,6 @@ namespace Core.Interfaces
     public interface IPageRepository
     {
         Task<List<Page>> GetAllPagesWithImages();
+        Task<List<Page>> GetOnePageWithImages(string facilities);
     }
 }
