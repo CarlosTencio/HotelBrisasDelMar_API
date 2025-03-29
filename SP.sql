@@ -148,6 +148,19 @@ EXEC GetMainPromotions
 
 --exec sp_get_facilities 'Facilidades';
 
+--exec sp_get_facilities 'Facilidades'
+
+--insert into Page  (PageTitle,PageContent) values ('Facilidades','Sumérgete en un oasis de tranquilidad en nuestra exclusiva piscina rodeada de exuberante vegetación tropical. Diseñada para brindar una experiencia relajante, esta piscina cuenta con fuentes de agua que añaden un toque de serenidad al ambiente. El área de la piscina está cuidadosamente decorada con palmeras y plantas exóticas, creando un entorno natural y fresco.')
+--insert into Page  (PageTitle,PageContent) values ('Facilidades','Para aquellos que disfrutan preparando sus propias comidas, nuestro hotel ofrece una cocina totalmente equipada para huéspedes. Este espacio cuenta con todo lo necesario para que puedas cocinar con comodidad, incluyendo estufa, horno, refrigerador, utensilios de cocina, vajilla y una zona de comedor.')
+--insert into Page  (PageTitle,PageContent) values ('Facilidades','6	Facilidades	Nuestro hotel cuenta con un parqueo verde, un espacio diseñado para ofrecer comodidad a nuestros huéspedes mientras cuidamos el medio ambiente. Ubicado en una zona rodeada de naturaleza, este estacionamiento combina áreas pavimentadas con superficies permeables que permiten la filtración del agua, reduciendo el impacto ambiental.	https://media-cdn.tripadvisor.com/media/photo-s/1c/50/ee/77/acceso-para-cualquier.jpg')
+
+--insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
+--insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
+--insert into [Image]  (ImagePath) values ('https://media-cdn.tripadvisor.com/media/photo-s/1c/50/ee/77/acceso-para-cualquier.jpg')
+ 
+--insert into PageImage (PageID,ImageID) VALUES (4,5)
+--insert into PageImage (PageID,ImageID) VALUES (5,6)
+--insert into PageImage (PageID,ImageID) VALUES (6,7)
 -- INSERT IMAGES 
 
 --INSERT INTO [dbo].[Image]
