@@ -147,3 +147,35 @@ EXEC GetMainPromotions
 --END;
 
 --exec sp_get_facilities 'Facilidades';
+
+-- INSERT IMAGES 
+
+--INSERT INTO [dbo].[Image]
+--           ([ImagePath])
+--     VALUES
+--           ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131527/areadepiscina_uqh9fc.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/alrededores_y4fgsv.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/areadepiscina5_pkemkt.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131524/restaurante2_hqnsan.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131524/restaurante_pjaza3.webp'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131525/salas_qymi1s.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131524/habitacion_f3zkjf.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131524/habitacion2_k65csg.webp'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131526/areadepiscina3_lvq2xt.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131524/areadepiscina2_qddrnc.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131522/areadepiscina4_iietjt.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743135093/areadepiscina6_boqwvc.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136634/restaurante3_da8mb5.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136631/alrededores8_p4tsam.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136631/alrededores9_o1xp5q.jpg'),
+--		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136632/areadepiscina7_f8oz0e.jpg')
+--
+
+-- INSERT IMAGES+PAGES - este puede variar el orden en caso de que ya hayan agregado imágenes previamente, pues los IDs de Image serían distintos
+
+--INSERT INTO [dbo].[PageImage]
+--           ([PageID]
+--           ,[ImageID])
+--     VALUES
+--           (2,5), (2,6), (2,7), (2,8), (2,9), (2,10), (2,11), (2,12), (2,13), (2,14), (2,15), (2,16), (2,17), (2,18), (2,19), (2,20)
+--
