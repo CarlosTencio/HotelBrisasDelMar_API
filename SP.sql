@@ -48,7 +48,7 @@
 --    LEFT JOIN Image i ON pi.ImageID = i.PageImageID
 --END
 
-EXEC GetPagesWithImages
+--EXEC GetPagesWithImages
 
 
 --CREATE PROCEDURE GetMainAds
@@ -60,9 +60,9 @@ EXEC GetPagesWithImages
 --	AND (GETDATE() BETWEEN [StartDate] AND [EndDate])
 --END
 
-exec GetMainAds
+--exec GetMainAds
 
----- Insertar anuncio de Coca-Cola (con fecha de inicio desde hoy)
+-- Insertar anuncio de Coca-Cola (con fecha de inicio desde hoy)
 --INSERT INTO [dbo].[Ad] ([Name], [StartDate], [EndDate], [IsActive], [Img], [ImgUrl])
 --VALUES 
 --('Coca-Cola Promoción Verano', 
@@ -101,7 +101,7 @@ exec GetMainAds
 --AND (GETDATE() BETWEEN [StartDate] AND [EndDate])
 --END
 
-EXEC GetMainPromotions
+--EXEC GetMainPromotions
 
 --insertar ejemplos para promociones
 --INSERT INTO [dbo].[Promotion] ([PromotionName], [StartDate], [EndDate], [IsActive], [Percent], [Img])
@@ -152,7 +152,7 @@ EXEC GetMainPromotions
 
 --insert into Page  (PageTitle,PageContent) values ('Facilidades','Sumérgete en un oasis de tranquilidad en nuestra exclusiva piscina rodeada de exuberante vegetación tropical. Diseñada para brindar una experiencia relajante, esta piscina cuenta con fuentes de agua que añaden un toque de serenidad al ambiente. El área de la piscina está cuidadosamente decorada con palmeras y plantas exóticas, creando un entorno natural y fresco.')
 --insert into Page  (PageTitle,PageContent) values ('Facilidades','Para aquellos que disfrutan preparando sus propias comidas, nuestro hotel ofrece una cocina totalmente equipada para huéspedes. Este espacio cuenta con todo lo necesario para que puedas cocinar con comodidad, incluyendo estufa, horno, refrigerador, utensilios de cocina, vajilla y una zona de comedor.')
---insert into Page  (PageTitle,PageContent) values ('Facilidades','6	Facilidades	Nuestro hotel cuenta con un parqueo verde, un espacio diseñado para ofrecer comodidad a nuestros huéspedes mientras cuidamos el medio ambiente. Ubicado en una zona rodeada de naturaleza, este estacionamiento combina áreas pavimentadas con superficies permeables que permiten la filtración del agua, reduciendo el impacto ambiental.	https://media-cdn.tripadvisor.com/media/photo-s/1c/50/ee/77/acceso-para-cualquier.jpg')
+--insert into Page  (PageTitle,PageContent) values ('Facilidades','Facilidades	Nuestro hotel cuenta con un parqueo verde, un espacio diseñado para ofrecer comodidad a nuestros huéspedes mientras cuidamos el medio ambiente. Ubicado en una zona rodeada de naturaleza, este estacionamiento combina áreas pavimentadas con superficies permeables que permiten la filtración del agua, reduciendo el impacto ambiental.	')
 
 --insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
 --insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
@@ -182,7 +182,7 @@ EXEC GetMainPromotions
 --		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136631/alrededores8_p4tsam.jpg'),
 --		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136631/alrededores9_o1xp5q.jpg'),
 --		   ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1743136632/areadepiscina7_f8oz0e.jpg')
---
+
 
 -- INSERT IMAGES+PAGES - este puede variar el orden en caso de que ya hayan agregado imágenes previamente, pues los IDs de Image serían distintos
 
@@ -191,4 +191,32 @@ EXEC GetMainPromotions
 --           ,[ImageID])
 --     VALUES
 --           (2,5), (2,6), (2,7), (2,8), (2,9), (2,10), (2,11), (2,12), (2,13), (2,14), (2,15), (2,16), (2,17), (2,18), (2,19), (2,20)
---
+
+----------------------------------------
+--RESERVA
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo')
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo')
+
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,1,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,2,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,3,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,4,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,5,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,6,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,7,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,8,0)
+--INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,9,0)
+
+
+
+-------------------SP roomType-----------------------------------------------
+
+--CREATE PROCEDURE sp_get_all_RoomType
+--AS
+--BEGIN
+--SELECT RoomTypeName
+--FROM RoomType
+--END
+--EXEC sp_get_all_RoomType
+
+
