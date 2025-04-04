@@ -86,7 +86,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Transaction")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookingID");
@@ -293,6 +292,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHigh")
                         .HasColumnType("bit");
 
                     b.Property<int>("Percent")

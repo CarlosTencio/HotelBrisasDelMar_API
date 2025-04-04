@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250402161359_AddRoomBookingTable")]
-    partial class AddRoomBookingTable
+    [Migration("20250404170036_HotelDB")]
+    partial class HotelDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,7 +89,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Transaction")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookingID");
@@ -296,6 +295,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHigh")
                         .HasColumnType("bit");
 
                     b.Property<int>("Percent")
