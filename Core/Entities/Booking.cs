@@ -20,7 +20,7 @@ namespace Core.Entities
         public DateTime CheckOut { get; set; }
         public int CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Transaction { get; set; }
         public bool IsActive { get; set; }
         // Relación muchos a muchos

@@ -14,5 +14,7 @@ namespace Core.Entities
         public DateTime EndDate { get; set; }
         public int Percent { get; set; }
         public bool IsActive { get; set; }
+        public bool IsHigh { get; set; }
+
     }
 }
