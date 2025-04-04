@@ -130,11 +130,12 @@ namespace Infrastructure.Migrations
                     BookingID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BookingReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CustomerID = table.Column<int>(type: "int", nullable: false),
-                    Transaction = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Transaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

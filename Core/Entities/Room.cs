@@ -22,6 +22,8 @@ namespace Core.Entities
 
         public int RoomNumber { get; set; }
         public bool Status { get; set; }
-     
+        // Relación muchos a muchos
+        public ICollection<RoomBooking> RoomBookings { get; set; }
+
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250330164138_HotelDB")]
+    partial class HotelDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,21 +241,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Room");
                 });
 
-            modelBuilder.Entity("Core.Entities.RoomBooking", b =>
-                {
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookingID")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoomId", "BookingID");
-
-                    b.HasIndex("BookingID");
-
-                    b.ToTable("RoomBooking");
-                });
-
             modelBuilder.Entity("Core.Entities.RoomType", b =>
                 {
                     b.Property<int>("RoomTypeId")
@@ -351,30 +339,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Core.Entities.RoomBooking", b =>
-                {
-                    b.HasOne("Core.Entities.Booking", "Booking")
-                        .WithMany("RoomBookings")
-                        .HasForeignKey("BookingID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Room", "Room")
-                        .WithMany("RoomBookings")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Core.Entities.Booking", b =>
-                {
-                    b.Navigation("RoomBookings");
-                });
-
             modelBuilder.Entity("Core.Entities.Image", b =>
                 {
                     b.Navigation("PageImages");
@@ -383,11 +347,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Page", b =>
                 {
                     b.Navigation("PageImages");
-                });
-
-            modelBuilder.Entity("Core.Entities.Room", b =>
-                {
-                    b.Navigation("RoomBookings");
                 });
 #pragma warning restore 612, 618
         }

@@ -31,6 +31,20 @@ namespace Infrastructure.Persistence
                 .HasOne(pi => pi.Image)
                 .WithMany(i => i.PageImages)
                 .HasForeignKey(pi => pi.ImageID);
+
+            modelBuilder.Entity<RoomBooking>()
+      .HasKey(rb => new { rb.RoomId, rb.BookingID });
+
+            modelBuilder.Entity<RoomBooking>()
+                .HasOne(rb => rb.Room)
+                .WithMany(r => r.RoomBookings)
+                .HasForeignKey(rb => rb.RoomId);
+
+            modelBuilder.Entity<RoomBooking>()
+                .HasOne(rb => rb.Booking)
+                .WithMany(b => b.RoomBookings)
+                .HasForeignKey(rb => rb.BookingID);
+
         }
     }
 }

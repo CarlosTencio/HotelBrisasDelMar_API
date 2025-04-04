@@ -20,22 +20,24 @@ namespace Hotel_API.Controllers
             _pageService = pageService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PageDTO>>> GetPages()
+        public async Task<IActionResult> GetPages()
         {
             try
             {
                 var pages = await _pageService.GetAllPagesWithImagesDto();
-                return Ok(pages);
 
+                if (pages == null || !pages.Any())
+                {
+                    return NotFound("No se encontraron páginas.");
+                }
+
+                return Ok(pages);
             }
             catch (Exception ex)
             {
-                // Loguear el error (si tienes un sistema de logging, como Serilog, NLog, etc.)
-                // Si no tienes un sistema de logs, puedes usar simplemente:
-                Console.WriteLine(ex.Message);
-                return StatusCode(500, $"Ocurrió un error al obtener las páginas: {ex.Message}");
+                Console.WriteLine($"Error: {ex.Message}"); // Solo imprime en consola (temporal)
+                return Problem(detail: "Ocurrió un error interno. Inténtelo más tarde.", statusCode: 500);
             }
-
         }
         [HttpGet]
         [Route("getPageForTittle")]
