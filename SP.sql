@@ -6,7 +6,7 @@
 --VALUES ('Sobre nosotros', 'En Hotel Brisas del Mar, nos especializamos en ofrecer una experiencia Ãºnica y acogedora para nuestros huÃ©spedes. Ubicado en Puerto viejo, LimÃ³n, nuestro hotel combina confort, elegancia y hospitalidad excepcional para garantizar una estadÃ­a inolvidable. Desde el momento en que cruzas nuestras puertas, te recibimos con un ambiente cÃ¡lido y un servicio personalizado. Nuestras habitaciones estÃ¡n diseÃ±adas para brindar el mÃ¡ximo confort, con comodidades modernas y detalles que hacen la diferencia. AdemÃ¡s, ofrecemos una amplia gama de servicios, incluyendo restaurante de alta cocina, spa, piscina y acceso a las principales atracciones de la zona. Ya sea que viajes por negocios o placer, nuestro compromiso es hacer que tu estancia sea inigualable. Â¡Esperamos darte la bienvenida pronto y hacer de tu visita una experiencia inolvidable!.');
 
 --INSERT INTO Page (PageTitle, PageContent)
---VALUES ('Contacto', 'Puedes contactarnos en info@ejemplo.com o llamando al +123456789.');
+--VALUES ('Contáctenos', 'Teléfonos: 2222-7070 / 2222-7171; Apartado Postal: 41001; Correo electrónico: info@brisasdelmar.com; Facebook: brisasdelmar.facebook.com; Instagram: @brisasdelmarig');
 
 ---- Insertar imÃ¡genes
 --INSERT INTO Image (ImagePath)
@@ -219,4 +219,6 @@
 --END
 --EXEC sp_get_all_RoomType
 
-
+-- Imagen para Contact
+-- INSERT INTO [dbo].[Image] ([ImagePath]) VALUES ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1744483188/istockphoto-2057973065-1024x1024_uwxx2c.jpg') 
+-- INSERT INTO [dbo].[PageImage] ([PageID],[ImageID]) VALUES (3,/*num generado por el id de la imagen anteriormente ingresada*/)
