@@ -21,5 +21,8 @@ namespace Core.Entities
         public string Characteristics { get; set; }
         [Required]
         public string description { get; set; }
+
+        public string Image { get; set; }
+
     }
 }

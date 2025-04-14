@@ -10,6 +10,6 @@ namespace Core.Interfaces
     public interface IRoomTypeRepository
     {
         Task<List<RoomType>> GetAllRoomType();
-
+        Task<List<RoomType>> GetAllRoomTypeBySeason();
     }
 }
