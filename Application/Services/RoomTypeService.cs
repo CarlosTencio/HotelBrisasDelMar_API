@@ -30,5 +30,21 @@ namespace Application.Services
            }).ToList();
 
         }
+
+        public async Task<List<RoomTypeDTO>> GetRoomRatePage()
+        {
+            var roomTypes = await _roomTypeRepository.GetAllRoomTypeBySeason();
+
+            return roomTypes.Select(r => new RoomTypeDTO
+            {
+                RoomTypeId = r.RoomTypeId,
+                RoomTypeName = r.RoomTypeName,
+                Price = r.Price,
+                Characteristics = r.Characteristics,
+                description = r.description,
+                Image = r.Image,
+            }).ToList();
+
+        }
     }
 }

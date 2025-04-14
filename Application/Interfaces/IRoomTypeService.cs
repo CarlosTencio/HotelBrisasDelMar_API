@@ -10,5 +10,6 @@ namespace Application.Interfaces
     public interface IRoomTypeService
     {
         Task<List<RoomTypeDTO>> GetAllRoomType();
+        Task<List<RoomTypeDTO>> GetRoomRatePage();
     }
 }
