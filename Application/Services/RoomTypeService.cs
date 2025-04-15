@@ -22,6 +22,7 @@ namespace Application.Services
            var roomTypes = await _roomTypeRepository.GetAllRoomType();
            return roomTypes.Select(r=> new RoomTypeDTO
            {
+               RoomTypeID = r.RoomTypeId,
                RoomTypeName = r.RoomTypeName,
                Characteristics = r.Characteristics,
                description = r.description,

@@ -9,8 +9,7 @@ namespace Application.DTOs
 {
     public class RoomTypeDTO
     {
-
-
+        public int RoomTypeID { get; set; }
         public string RoomTypeName { get; set; }
 
         public int Price { get; set; }

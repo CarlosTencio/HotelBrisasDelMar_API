@@ -193,30 +193,6 @@
 --           (2,5), (2,6), (2,7), (2,8), (2,9), (2,10), (2,11), (2,12), (2,13), (2,14), (2,15), (2,16), (2,17), (2,18), (2,19), (2,20)
 
 ----------------------------------------
---RESERVA
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo')
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo')
 
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,1,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,2,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,3,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,4,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,5,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,6,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,7,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,8,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,9,0)
-
-
-
--------------------SP roomType-----------------------------------------------
-
---CREATE PROCEDURE sp_get_all_RoomType
---AS
---BEGIN
---SELECT RoomTypeName
---FROM RoomType
---END
---EXEC sp_get_all_RoomType
 
 
