@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.DTOs;
+using Application.Interfaces;
+using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_API.Controllers
@@ -24,5 +26,22 @@ namespace Hotel_API.Controllers
 
             }
         }
+
+        [HttpGet]
+        [Route("getRoomRatePage")]
+        public async Task<ActionResult> getRoomRatePage()
+        {
+            try
+            {
+                var pages = await _roomTypeService.GetRoomRatePage();
+                return Ok(pages);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"Ocurrió un error al obtener las páginas: {ex.Message}");
+            }
+        }
+
     }
 }

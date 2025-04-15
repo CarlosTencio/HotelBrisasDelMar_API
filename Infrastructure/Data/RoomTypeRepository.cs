@@ -39,6 +39,16 @@ namespace Infrastructure.Data
             return roomTypes.ToList();
         }
 
-        
+        public async Task<List<RoomType>> GetAllRoomTypeBySeason()
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            var roomTypes = await connection.QueryAsync<RoomType>(
+                "sp_get_RoomType_season",
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+            return roomTypes.ToList();
+        }
     }
 }

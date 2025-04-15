@@ -6,7 +6,7 @@
 --VALUES ('Sobre nosotros', 'En Hotel Brisas del Mar, nos especializamos en ofrecer una experiencia Ãºnica y acogedora para nuestros huÃ©spedes. Ubicado en Puerto viejo, LimÃ³n, nuestro hotel combina confort, elegancia y hospitalidad excepcional para garantizar una estadÃ­a inolvidable. Desde el momento en que cruzas nuestras puertas, te recibimos con un ambiente cÃ¡lido y un servicio personalizado. Nuestras habitaciones estÃ¡n diseÃ±adas para brindar el mÃ¡ximo confort, con comodidades modernas y detalles que hacen la diferencia. AdemÃ¡s, ofrecemos una amplia gama de servicios, incluyendo restaurante de alta cocina, spa, piscina y acceso a las principales atracciones de la zona. Ya sea que viajes por negocios o placer, nuestro compromiso es hacer que tu estancia sea inigualable. Â¡Esperamos darte la bienvenida pronto y hacer de tu visita una experiencia inolvidable!.');
 
 --INSERT INTO Page (PageTitle, PageContent)
---VALUES ('Contacto', 'Puedes contactarnos en info@ejemplo.com o llamando al +123456789.');
+--VALUES ('Contáctenos', 'Teléfonos: 2222-7070 / 2222-7171; Apartado Postal: 41001; Correo electrónico: info@brisasdelmar.com; Facebook: brisasdelmar.facebook.com; Instagram: @brisasdelmarig');
 
 ---- Insertar imÃ¡genes
 --INSERT INTO Image (ImagePath)
@@ -195,4 +195,53 @@
 ----------------------------------------
 
 
+-- Imagen para Contact
+-- INSERT INTO [dbo].[Image] ([ImagePath]) VALUES ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1744483188/istockphoto-2057973065-1024x1024_uwxx2c.jpg') 
+-- INSERT INTO [dbo].[PageImage] ([PageID],[ImageID]) VALUES (3,/*num generado por el id de la imagen anteriormente ingresada*/)
 
+--------------------INSERTS ROOMRATE PAGE------------------
+--insert into Page  (PageTitle,PageContent) values ('RoomRate','')
+--insert into Page  (PageTitle,PageContent) values ('RoomRate','')
+--insert into Page  (PageTitle,PageContent) values ('RoomRate','')
+
+--insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
+--insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
+--insert into [Image]  (ImagePath) values ('https://media-cdn.tripadvisor.com/media/photo-s/1c/50/ee/77/acceso-para-cualquier.jpg')
+
+
+---------------------Insert in RoomType--------------------------
+--Estas imagenes seran segun la cantidad de tipos de habitacion que se tenga
+insert into PageImage (PageID,ImageID) VALUES (10,5)
+insert into PageImage (PageID,ImageID) VALUES (11,6)
+--RESERVA
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/alrededores_y4fgsv.jpg')
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131527/areadepiscina_uqh9fc.jpg')
+
+
+---------------------SP ROOMRATE PAGE----------------------
+--Insert season
+INSERT INTO Season 
+    (SeasonName, StartDate, EndDate, [Percent], IsActive, IsHigh)
+VALUES 
+    ('Temporada Alta', GETDATE(), DATEADD(DAY, 6, GETDATE()), 15, 1, 1);
+
+CREATE PROCEDURE sp_get_RoomType_season
+As
+BEGIN
+	SELECT 
+		rt.RoomTypeId,
+		rt.RoomTypeName,
+		CAST(rt.Price * (1 + CASE WHEN s.IsHigh = 1 THEN s.[Percent] / 100.0 ELSE -s.[Percent] / 100.0 END)AS INT)AS Price,
+		rt.Characteristics,
+		rt.description,
+		rt.Image
+	FROM 
+		RoomType rt
+	INNER JOIN 
+		Season s
+		ON GETDATE() BETWEEN s.StartDate AND s.EndDate
+	WHERE 
+		s.IsActive = 1;
+END
+
+Exec sp_get_RoomType_season
