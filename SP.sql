@@ -193,31 +193,7 @@
 --           (2,5), (2,6), (2,7), (2,8), (2,9), (2,10), (2,11), (2,12), (2,13), (2,14), (2,15), (2,16), (2,17), (2,18), (2,19), (2,20)
 
 ----------------------------------------
---RESERVA
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/alrededores_y4fgsv.jpg')
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131527/areadepiscina_uqh9fc.jpg')
 
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,1,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,2,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,3,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,4,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,5,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,6,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,7,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,8,0)
---INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,9,0)
-
-
-
--------------------SP roomType-----------------------------------------------
-
---CREATE PROCEDURE sp_get_all_RoomType
---AS
---BEGIN
---SELECT RoomTypeName
---FROM RoomType
---END
---EXEC sp_get_all_RoomType
 
 -- Imagen para Contact
 -- INSERT INTO [dbo].[Image] ([ImagePath]) VALUES ('https://res.cloudinary.com/dqmusg1pu/image/upload/v1744483188/istockphoto-2057973065-1024x1024_uwxx2c.jpg') 
@@ -237,6 +213,10 @@
 --Estas imagenes seran segun la cantidad de tipos de habitacion que se tenga
 insert into PageImage (PageID,ImageID) VALUES (10,5)
 insert into PageImage (PageID,ImageID) VALUES (11,6)
+--RESERVA
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/alrededores_y4fgsv.jpg')
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131527/areadepiscina_uqh9fc.jpg')
+
 
 ---------------------SP ROOMRATE PAGE----------------------
 --Insert season

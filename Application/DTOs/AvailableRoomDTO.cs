@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs
 {
-    public class RoomDTO
+    public class AvailableRoomDTO
     {
-        public int RoomType { get; set; }
-
-        public bool IsActice { get; set; }
-
         public int RoomNumber { get; set; }
-        public bool Status { get; set; }
-
+        public int RoomTypeId { get; set; }
+        public string RoomTypeName { get; set; }
+        public string Description { get; set; }
     }
 }
