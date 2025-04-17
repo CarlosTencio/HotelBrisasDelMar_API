@@ -25,7 +25,7 @@ namespace Application.Services
                RoomTypeID = r.RoomTypeId,
                RoomTypeName = r.RoomTypeName,
                Characteristics = r.Characteristics,
-               description = r.description,
+               Description = r.description,
                Price = r.Price
 
            }).ToList();
@@ -38,11 +38,11 @@ namespace Application.Services
 
             return roomTypes.Select(r => new RoomTypeDTO
             {
-                RoomTypeId = r.RoomTypeId,
+                RoomTypeID = r.RoomTypeId,
                 RoomTypeName = r.RoomTypeName,
                 Price = r.Price,
                 Characteristics = r.Characteristics,
-                description = r.description,
+                Description = r.description,
                 Image = r.Image,
             }).ToList();
 
