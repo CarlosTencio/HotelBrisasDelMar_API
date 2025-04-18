@@ -211,37 +211,40 @@
 
 ---------------------Insert in RoomType--------------------------
 --Estas imagenes seran segun la cantidad de tipos de habitacion que se tenga
-insert into PageImage (PageID,ImageID) VALUES (10,5)
-insert into PageImage (PageID,ImageID) VALUES (11,6)
+--insert into PageImage (PageID,ImageID) VALUES (10,5)
+--insert into PageImage (PageID,ImageID) VALUES (11,6)
+
 --RESERVA
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/alrededores_y4fgsv.jpg')
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131527/areadepiscina_uqh9fc.jpg')
+--Use ~ para separar cada caracteristica
+
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Normal', 500,'La habitación cuanta con dos camas~ una matrimonial y una individual','Perfecto para que nos venga a visitar con un precio más cómodo, pero igual de agradable', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131523/alrededores_y4fgsv.jpg')
+--INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description, Image)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales~ un Jacuzzi','Perfecto para que nos venga a visitar con la mayor comodidad', 'https://res.cloudinary.com/dqmusg1pu/image/upload/v1743131527/areadepiscina_uqh9fc.jpg')
 
 
 ---------------------SP ROOMRATE PAGE----------------------
 --Insert season
-INSERT INTO Season 
-    (SeasonName, StartDate, EndDate, [Percent], IsActive, IsHigh)
-VALUES 
-    ('Temporada Alta', GETDATE(), DATEADD(DAY, 6, GETDATE()), 15, 1, 1);
+--INSERT INTO Season 
+--    (SeasonName, StartDate, EndDate, [Percent], IsActive, IsHigh)
+--VALUES 
+--    ('Temporada Alta', GETDATE(), DATEADD(DAY, 6, GETDATE()), 15, 1, 1);
 
-CREATE PROCEDURE sp_get_RoomType_season
-As
-BEGIN
-	SELECT 
-		rt.RoomTypeId,
-		rt.RoomTypeName,
-		CAST(rt.Price * (1 + CASE WHEN s.IsHigh = 1 THEN s.[Percent] / 100.0 ELSE -s.[Percent] / 100.0 END)AS INT)AS Price,
-		rt.Characteristics,
-		rt.description,
-		rt.Image
-	FROM 
-		RoomType rt
-	INNER JOIN 
-		Season s
-		ON GETDATE() BETWEEN s.StartDate AND s.EndDate
-	WHERE 
-		s.IsActive = 1;
-END
+--CREATE PROCEDURE sp_get_RoomType_season
+--As
+--BEGIN
+--	SELECT 
+--		rt.RoomTypeId,
+--		rt.RoomTypeName,
+--		CAST(rt.Price * (1 + CASE WHEN s.IsHigh = 1 THEN s.[Percent] / 100.0 ELSE -s.[Percent] / 100.0 END)AS INT)AS Price,
+--		rt.Characteristics,
+--		rt.description,
+--		rt.Image
+--	FROM 
+--		RoomType rt
+--	INNER JOIN 
+--		Season s
+--		ON GETDATE() BETWEEN s.StartDate AND s.EndDate
+--	WHERE 
+--		s.IsActive = 1;
+--END
 
-Exec sp_get_RoomType_season
+--Exec sp_get_RoomType_season
