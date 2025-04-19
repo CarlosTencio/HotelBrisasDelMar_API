@@ -15,9 +15,16 @@ namespace Application.Services
             _roomRepository = roomRepository;
         }
 
-        public async Task<AvailableRoomDTO?> CheckAvailabilty(AvailabilityCriterion availabilityCriterion)
+        public async Task<AvailableRoomDTO?> CheckAvailabilty(AvailabilityCriterionDTO availabilityCriteriondto)
         {
-            var room = await _roomRepository.CheckAvailability(availabilityCriterion);
+            // Mapear el DTO al Value Object
+            var criterion = new AvailabilityCriterion(
+                availabilityCriteriondto.EntryDate,
+                availabilityCriteriondto.DepartureDate,
+                availabilityCriteriondto.RoomTypeId
+            );
+
+            var room = await _roomRepository.CheckAvailability(criterion);
 
             if (room == null)
                 return null;
@@ -25,11 +32,18 @@ namespace Application.Services
             return new AvailableRoomDTO
             {
                 RoomNumber = room.RoomNumber,
+                RoomId = room.RoomId,
                 RoomTypeId = room.RoomTypeId,
                 RoomTypeName = room.RoomTypeName,
-                Description = room.Description
+                Description = room.Description,
+                Price = room.Price,
+                ImgUrl = room.ImgUrl,
+                CheckIn=room.CheckIn,
+                CheckOut=room.CheckOut,
+                ResultType = room.ResultType
             };
         }
+
 
     }
 }

@@ -8,9 +8,9 @@ namespace Core.ValueObjects
 {
     public class AvailabilityCriterion
     {
-        public DateTime EntryDate { get; }
-        public DateTime DepartureDate { get; }
-        public int RoomTypeId { get; }
+        public DateTime EntryDate { get; set; }
+        public DateTime DepartureDate { get; set; }
+        public int RoomTypeId { get; set;  }
 
         public AvailabilityCriterion(DateTime entryDate, DateTime departureDate, int roomTypeId)
         {

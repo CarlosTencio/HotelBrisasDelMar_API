@@ -17,5 +17,13 @@ namespace Core.Entities
         public string CustomerLastName { get; set; }
         public string CustomerEmail { get; set; }
         public string CardNumber { get; set; }
+
+        public Customer(string customerName, string customerLastName, string customerEmail, string cardNumber)
+        {
+            CustomerName = customerName;
+            CustomerLastName = customerLastName;
+            CustomerEmail = customerEmail;
+            CardNumber = cardNumber;
+        }
     }
 }

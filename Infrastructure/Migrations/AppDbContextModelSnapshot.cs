@@ -84,13 +84,17 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Transaction")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RoomID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Transaction")
+                        .HasColumnType("int");
 
                     b.HasKey("BookingID");
 
                     b.HasIndex("CustomerID");
+
+                    b.HasIndex("RoomID");
 
                     b.ToTable("Booking");
                 });
@@ -237,21 +241,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Room");
                 });
 
-            modelBuilder.Entity("Core.Entities.RoomBooking", b =>
-                {
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookingID")
-                        .HasColumnType("int");
-
-                    b.HasKey("RoomId", "BookingID");
-
-                    b.HasIndex("BookingID");
-
-                    b.ToTable("RoomBooking");
-                });
-
             modelBuilder.Entity("Core.Entities.RoomType", b =>
                 {
                     b.Property<int>("RoomTypeId")
@@ -324,7 +313,15 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Core.Entities.PageImage", b =>
@@ -357,30 +354,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("RoomType");
                 });
 
-            modelBuilder.Entity("Core.Entities.RoomBooking", b =>
-                {
-                    b.HasOne("Core.Entities.Booking", "Booking")
-                        .WithMany("RoomBookings")
-                        .HasForeignKey("BookingID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Room", "Room")
-                        .WithMany("RoomBookings")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Core.Entities.Booking", b =>
-                {
-                    b.Navigation("RoomBookings");
-                });
-
             modelBuilder.Entity("Core.Entities.Image", b =>
                 {
                     b.Navigation("PageImages");
@@ -389,11 +362,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Page", b =>
                 {
                     b.Navigation("PageImages");
-                });
-
-            modelBuilder.Entity("Core.Entities.Room", b =>
-                {
-                    b.Navigation("RoomBookings");
                 });
 #pragma warning restore 612, 618
         }
