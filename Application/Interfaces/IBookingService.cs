@@ -1,5 +1,4 @@
 ﻿using Application.DTOs;
-using Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    public interface IRoomService
+    public interface IBookingService
     {
-        Task<AvailableRoomDTO?> CheckAvailabilty(AvailabilityCriterionDTO availabilityCriterion);
+        Task<BookingResponseDTO> CreateBooking(BookingDTO bookingDTO);
+      
     }
 }

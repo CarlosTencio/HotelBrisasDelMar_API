@@ -24,9 +24,6 @@ namespace Application.Services
            {
                RoomTypeID = r.RoomTypeId,
                RoomTypeName = r.RoomTypeName,
-               Characteristics = r.Characteristics,
-               Description = r.description,
-               Price = r.Price
 
            }).ToList();
 

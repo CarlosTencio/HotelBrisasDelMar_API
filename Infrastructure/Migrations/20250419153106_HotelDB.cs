@@ -126,31 +126,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Booking",
-                columns: table => new
-                {
-                    BookingID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BookingReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CustomerID = table.Column<int>(type: "int", nullable: false),
-                    Transaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Booking", x => x.BookingID);
-                    table.ForeignKey(
-                        name: "FK_Booking_Customer_CustomerID",
-                        column: x => x.CustomerID,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PageImage",
                 columns: table => new
                 {
@@ -197,24 +172,32 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomBooking",
+                name: "Booking",
                 columns: table => new
                 {
-                    RoomId = table.Column<int>(type: "int", nullable: false),
                     BookingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoomID = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BookingReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CheckIn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOut = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CustomerID = table.Column<int>(type: "int", nullable: false),
+                    Transaction = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomBooking", x => new { x.RoomId, x.BookingID });
+                    table.PrimaryKey("PK_Booking", x => x.BookingID);
                     table.ForeignKey(
-                        name: "FK_RoomBooking_Booking_BookingID",
-                        column: x => x.BookingID,
-                        principalTable: "Booking",
-                        principalColumn: "BookingID",
+                        name: "FK_Booking_Customer_CustomerID",
+                        column: x => x.CustomerID,
+                        principalTable: "Customer",
+                        principalColumn: "CustomerID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoomBooking_Room_RoomId",
-                        column: x => x.RoomId,
+                        name: "FK_Booking_Room_RoomID",
+                        column: x => x.RoomID,
                         principalTable: "Room",
                         principalColumn: "RoomId",
                         onDelete: ReferentialAction.Cascade);
@@ -226,6 +209,11 @@ namespace Infrastructure.Migrations
                 column: "CustomerID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Booking_RoomID",
+                table: "Booking",
+                column: "RoomID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PageImage_ImageID",
                 table: "PageImage",
                 column: "ImageID");
@@ -234,11 +222,6 @@ namespace Infrastructure.Migrations
                 name: "IX_Room_RoomTypeId",
                 table: "Room",
                 column: "RoomTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomBooking_BookingID",
-                table: "RoomBooking",
-                column: "BookingID");
         }
 
         /// <inheritdoc />
@@ -248,31 +231,28 @@ namespace Infrastructure.Migrations
                 name: "Ad");
 
             migrationBuilder.DropTable(
+                name: "Booking");
+
+            migrationBuilder.DropTable(
                 name: "PageImage");
 
             migrationBuilder.DropTable(
                 name: "Promotion");
 
             migrationBuilder.DropTable(
-                name: "RoomBooking");
+                name: "Season");
 
             migrationBuilder.DropTable(
-                name: "Season");
+                name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "Room");
 
             migrationBuilder.DropTable(
                 name: "Image");
 
             migrationBuilder.DropTable(
                 name: "Page");
-
-            migrationBuilder.DropTable(
-                name: "Booking");
-
-            migrationBuilder.DropTable(
-                name: "Room");
-
-            migrationBuilder.DropTable(
-                name: "Customer");
 
             migrationBuilder.DropTable(
                 name: "RoomType");

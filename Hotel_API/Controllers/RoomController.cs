@@ -16,7 +16,7 @@ namespace Hotel_API.Controllers
             _roomService = roomService;
         }
         [HttpPost("check-availability")]
-        public async Task<ActionResult<AvailableRoomDTO?>> checkAvailability([FromBody] AvailabilityCriterion availabilityCriterion)
+        public async Task<ActionResult<AvailableRoomDTO?>> checkAvailability([FromBody] AvailabilityCriterionDTO availabilityCriterion)
         {
             try
             {
