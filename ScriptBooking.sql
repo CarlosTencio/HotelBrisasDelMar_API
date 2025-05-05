@@ -1,8 +1,6 @@
  -------Booking----------------
 --RESERVA
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description)VALUES('Normal', 500,'La habitación cuanta con dos camas, una matrimonial y una individual','Perfecto para una pareja con su hijo')
---INSERT INTO RoomType(RoomTypeName, Price,Characteristics,description)VALUES('Premium', 1000,'La habitación cuanta con dos camas matrimoniales y una Jacuzzi','Perfecto para una pareja con su hijo')
-select * from RoomType
+
 ----isActive 1=se puede usar
 --status 1=ocupada
 --INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,1,0)
