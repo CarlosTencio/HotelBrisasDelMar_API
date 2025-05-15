@@ -10,6 +10,11 @@ namespace Application.Interfaces
     public interface IPromotionService
     {
        Task<List<PromotionMainDTO>> GetAllMainPromotionDto();
+       Task<List<PromotionMainDTO>> GetAllPromotions();
+       Task<PromotionMainDTO?> GetPromotionById(int id);
+       Task<int> CreatePromotion(PromotionMainDTO dto);
+       Task<bool> UpdatePromotion(PromotionMainDTO dto);
+       Task<bool> DeletePromotion(int id);
 
     }
 }

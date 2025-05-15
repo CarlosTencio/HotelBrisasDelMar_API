@@ -35,6 +35,43 @@ namespace Hotel_API.Controllers
                 return StatusCode(500, $"Ocurrió un error al obtener las promociones: {ex.Message}");
             }
         }
+        
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<PromotionMainDTO>>> GetAll()
+        {
+            return Ok(await _promotionService.GetAllPromotions());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PromotionMainDTO>> GetById(int id)
+        {
+            var promo = await _promotionService.GetPromotionById(id);
+            if (promo == null) return NotFound();
+            return Ok(promo);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<int>> Create([FromBody] PromotionMainDTO dto)
+        {
+            var id = await _promotionService.CreatePromotion(dto);
+            return Ok(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] PromotionMainDTO dto)
+        {
+            var result = await _promotionService.UpdatePromotion(dto);
+            if (!result) return NotFound();
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var result = await _promotionService.DeletePromotion(id);
+            if (!result) return NotFound();
+            return Ok();
+        }
 
     }
 }
