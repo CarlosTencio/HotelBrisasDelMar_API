@@ -11,6 +11,10 @@ namespace Application.Interfaces
     public interface IRoomService
     {
         Task<AvailableRoomDTO?> CheckAvailabilty(AvailabilityCriterionDTO availabilityCriterion);
+
         Task UpdateRoomStatus(int id);    
+
+        Task<List<StatusRoomDTO?>> StatusRoom();  
+
     }
 }
