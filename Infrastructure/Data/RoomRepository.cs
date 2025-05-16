@@ -52,7 +52,20 @@ namespace Infrastructure.Data
             }
         }
 
+        public async Task UpdateRoomStatus(int roomId)
+        {
+            using (var connection = CreateConnection())
+            {
+                var parameters = new { roomId = roomId };
+                var query = "sp_enable_room";
 
+                await connection.ExecuteAsync(
+                    query,
+                    parameters,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+            }
+        }
     }
 
 

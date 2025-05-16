@@ -3,14 +3,14 @@
 -- VALUES ('Inicio', 'En Brisas del Mar, te invitamos a descubrir un paraíso de tranquilidad y belleza natural. Ubicado frente a las aguas cristalinas del océano, nuestro hotel combina elegancia y comodidad para ofrecerte una experiencia inolvidable. Desde el momento en que llegas, te envuelve la brisa marina y la cálida hospitalidad de nuestro equipo. Contamos con habitaciones diseñadas para el descanso, cada una con vistas espectaculares y todas las comodidades que necesitas para una estancia placentera. Relájate en nuestra piscina al aire libre, disfruta de exquisitos platillos en nuestro restaurante con gastronomía local e internacional, o explora las maravillas que nos rodean, desde playas de arena dorada hasta aventuras acuáticas. Ya sea que busques un escape romántico, unas vacaciones familiares o un retiro de relajación, Brisas del Mar es el destino perfecto. Déjanos ser parte de tus mejores recuerdos y permítenos brindarte una experiencia única donde el mar, la naturaleza y el confort se unen en armonía.
 -- ¡Reserva hoy y comienza a vivir la magia de Brisas del Mar!');
 
--- INSERT INTO Page (PageTitle, PageContent)
--- VALUES ('Sobre nosotros', 'En Hotel Brisas del Mar, nos especializamos en ofrecer una experiencia Ãºnica y acogedora para nuestros huÃ©spedes. Ubicado en Puerto viejo, LimÃ³n, nuestro hotel combina confort, elegancia y hospitalidad excepcional para garantizar una estadÃ­a inolvidable. Desde el momento en que cruzas nuestras puertas, te recibimos con un ambiente cÃ¡lido y un servicio personalizado. Nuestras habitaciones estÃ¡n diseÃ±adas para brindar el mÃ¡ximo confort, con comodidades modernas y detalles que hacen la diferencia. AdemÃ¡s, ofrecemos una amplia gama de servicios, incluyendo restaurante de alta cocina, spa, piscina y acceso a las principales atracciones de la zona. Ya sea que viajes por negocios o placer, nuestro compromiso es hacer que tu estancia sea inigualable. Â¡Esperamos darte la bienvenida pronto y hacer de tu visita una experiencia inolvidable!.');
+ INSERT INTO Page (PageTitle, PageContent)
+ VALUES ('Sobre nosotros', 'En Hotel Brisas del Mar, nos especializamos en ofrecer una experiencia Ãºnica y acogedora para nuestros huÃ©spedes. Ubicado en Puerto viejo, LimÃ³n, nuestro hotel combina confort, elegancia y hospitalidad excepcional para garantizar una estadÃ­a inolvidable. Desde el momento en que cruzas nuestras puertas, te recibimos con un ambiente cÃ¡lido y un servicio personalizado. Nuestras habitaciones estÃ¡n diseÃ±adas para brindar el mÃ¡ximo confort, con comodidades modernas y detalles que hacen la diferencia. AdemÃ¡s, ofrecemos una amplia gama de servicios, incluyendo restaurante de alta cocina, spa, piscina y acceso a las principales atracciones de la zona. Ya sea que viajes por negocios o placer, nuestro compromiso es hacer que tu estancia sea inigualable. Â¡Esperamos darte la bienvenida pronto y hacer de tu visita una experiencia inolvidable!.');
 
 -- INSERT INTO Page (PageTitle, PageContent)
 -- VALUES ('Contáctenos', 'Teléfonos: 2222-7070 / 2222-7171; Apartado Postal: 41001; Correo electrónico: info@brisasdelmar.com; Facebook: brisasdelmar.facebook.com; Instagram: @brisasdelmarig');
 
--- INSERT INTO Page (PageTitle, PageContent)
--- VALUES ('Como llegar?', 'Estamos ubicados en Manzanillo, Limón. Para llegar al hotel puedes buscarnos en Google Maps o Waze como Hotel Brisas del Mar');
+ --INSERT INTO Page (PageTitle, PageContent)
+ --VALUES ('Como llegar?', 'Estamos ubicados en Manzanillo, Limón. Para llegar al hotel puedes buscarnos en Google Maps o Waze como Hotel Brisas del Mar');
 
 -- -- Insertar imÃ¡genes
 -- INSERT INTO Image (ImagePath)
@@ -225,10 +225,15 @@
 
 ---------------------SP ROOMRATE PAGE----------------------
 --Insert season
--- INSERT INTO Season 
---    (SeasonName, StartDate, EndDate, [Percent], IsActive, IsHigh)
--- VALUES 
---    ('Temporada Alta', GETDATE(), DATEADD(DAY, 6, GETDATE()), 15, 1, 1);
+INSERT INTO Season 
+    (SeasonName, StartDate, EndDate, [Percent], IsActive, IsHigh)
+ VALUES 
+    ('Temporada Alta', '2025-01-01', '2025-07-31', 15, 1, 1);
+
+     INSERT INTO Season 
+    (SeasonName, StartDate, EndDate, [Percent], IsActive, IsHigh)
+ VALUES 
+    ('Temporada Baja', '2025-08-01', '2025-12-31', 15, 1, 0);
 
 -- CREATE PROCEDURE sp_get_RoomType_season
 -- As
