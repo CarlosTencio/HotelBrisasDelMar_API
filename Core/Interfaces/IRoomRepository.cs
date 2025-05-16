@@ -7,6 +7,10 @@ namespace Core.Interfaces
     {
         Task<AvailabilityRoom?> CheckAvailability(AvailabilityCriterion availabilityCriterion);
 
+        Task UpdateRoomStatus(int roomId);
+
+
         Task<List<StatusRoom>> GetAllHotelStatusRooms();
+
     }
 }

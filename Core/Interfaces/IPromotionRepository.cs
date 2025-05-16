@@ -11,6 +11,10 @@ namespace Core.Interfaces
     {
 
         Task<List<Promotion>> GetAllMainPromotion();
-
+        Task<List<Promotion>> GetAllPromotions();
+        Task<Promotion?> GetPromotionById(int id);
+        Task<int> CreatePromotion(Promotion promotion);
+        Task<bool> UpdatePromotion(Promotion promotion);
+        Task<bool> DeletePromotion(int id);
     }
 }

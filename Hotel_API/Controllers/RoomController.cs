@@ -20,18 +20,35 @@ namespace Hotel_API.Controllers
         {
             try
             {
+                var result = await _roomService.CheckAvailabilty(availabilityCriterion);
 
-                var room = await _roomService.CheckAvailabilty(availabilityCriterion);
-
-                if (room == null)
+                if (result == null)
                     return Ok();
 
-                return Ok(room);
+                return Ok(result);
+            }
+            catch (ArgumentException ex) // Esto captura lo lanzado por el ValueObject
+            {
+                return BadRequest(new { error = ex.Message }); // Retorna 400 con el mensaje del dominio
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return StatusCode(500, $"Ocurrió un error al obtener las habitaciones: {ex.Message}");
+                // Log o debug si querés: Console.WriteLine(ex);
+                return StatusCode(500, new { error = "Ocurrió un error al verificar disponibilidad." });
+            }
+        }
+
+        [HttpPut("room-status/{id}")]
+        public async Task<ActionResult> UpdateRoomStatus(int id)
+        {
+            try
+            {
+                await _roomService.UpdateRoomStatus(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error al actualizar el estado de la habitación." });
             }
         }
 
