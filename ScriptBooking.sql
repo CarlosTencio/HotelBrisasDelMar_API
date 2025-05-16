@@ -1,8 +1,6 @@
  -------Booking----------------
 --RESERVA
 
-----isActive 1=se puede usar
---status 1=ocupada
 --INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,1,0)
 --INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,2,0)
 --INSERT INTO Room(RoomTypeId,[IsActice],[RoomNumber],[Status])VALUES(1,1,3,0)
@@ -30,25 +28,14 @@
 
 --INSERT INTO [HotelDB].[dbo].[Booking] ([CreationDate], [BookingReferenceNumber], [CheckIn], [CheckOut], [CustomerID], [Transaction], [IsActive],[RoomId])
 --VALUES
---('2025-04-01 10:00:00', 'BR123456', '2025-04-10', '2025-04-15', 1, 'TXN001', 1,28),
---( '2025-04-03 14:00:00', 'BR123458', '2025-04-15', '2025-04-20', 3, 'TXN003', 1,29),
---( '2025-04-04 16:00:00', 'BR123459', '2025-04-20', '2025-04-25', 4, 'TXN004', 1,30),
---( '2025-04-05 18:00:00', 'BR123460', '2025-04-25', '2025-04-30', 5, 'TXN005', 1,31),
---( '2025-04-06 20:00:00', 'BR123461', '2025-04-28', '2025-05-02', 6, 'TXN006', 1,32),
---('2025-04-07 22:00:00', 'BR123462', '2025-05-01', '2025-05-05', 7, 'TXN007', 1,33),
---( '2025-04-08 10:30:00', 'BR123463', '2025-05-03', '2025-05-08', 8, 'TXN008', 1,34)
---INSERT INTO [HotelDB].[dbo].[Booking] 
---([CreationDate], [BookingReferenceNumber], [CheckIn], [CheckOut], [CustomerID], [Transaction], [IsActive], [RoomId])
---VALUES
---('2025-04-03 14:00:00', 'BR123456', '2025-04-10', '2025-04-15', 1, 'TXN001', 1, 37),
---('2025-04-03 14:00:00', 'BR123458', '2025-04-10', '2025-04-15', 3, 'TXN003', 1, 38),      
---('2025-04-04 16:00:00', 'BR123459', '2025-04-10', '2025-04-15', 4, 'TXN004', 1, 39),
---('2025-04-05 18:00:00', 'BR123460', '2025-04-10', '2025-04-15', 5, 'TXN005', 1, 40),
---('2025-04-06 20:00:00', 'BR123461', '2025-04-10', '2025-04-15', 6, 'TXN006', 1, 41),
---('2025-04-03 14:00:00', 'BR123456', '2025-04-10', '2025-04-15', 1, 'TXN001', 1, 42),
---('2025-04-07 22:00:00', 'BR123462', '2025-04-10', '2025-04-15', 7, 'TXN007', 1, 43),
---('2025-04-08 10:30:00', 'BR123463', '2025-04-10', '2025-04-15', 8, 'TXN008', 1, 44),
---('2025-04-08 10:30:00', 'BR123463', '2025-04-10', '2025-04-15', 8, 'TXN008', 1, 45);
+--('2025-04-01 10:00:00', 'BR123456', '2025-04-10', '2025-04-15', 1, 2131, 1,28),
+--( '2025-04-03 14:00:00', 'BR123458', '2025-04-15', '2025-04-20', 3, 123, 1,29),
+--( '2025-04-04 16:00:00', 'BR123459', '2025-04-20', '2025-04-25', 4, 123213, 1,30),
+--( '2025-04-05 18:00:00', 'BR123460', '2025-04-25', '2025-04-30', 5, 123, 1,31),
+--( '2025-04-06 20:00:00', 'BR123461', '2025-04-28', '2025-05-02', 6, 12312, 1,32),
+--('2025-04-07 22:00:00', 'BR123462', '2025-05-01', '2025-05-05', 7, 213, 1,33),
+--( '2025-04-08 10:30:00', 'BR123463', '2025-05-03', '2025-05-08', 8,1232131, 1,34)
+
 ---------------------SP roomType-----------------------------------------------
 
 --CREATE PROCEDURE sp_get_all_RoomType
@@ -63,6 +50,7 @@
 
 --------------------------SP check_availability -------------------------------------------------------
 
+
 --CREATE PROCEDURE sp_check_availability
 --    @RoomType INT,
 --    @StartTime DATETIME,
@@ -70,7 +58,6 @@
 --AS
 --BEGIN
 --    SET NOCOUNT ON;
-
 --    -- Calcular número de noches
 --    DECLARE @NumNights INT;
 --    SET @NumNights = DATEDIFF(DAY, @StartTime, @EndTime);
@@ -81,56 +68,96 @@
 --    FROM Promotion
 --    WHERE IsActive = 1
 --      AND GETDATE() BETWEEN StartDate AND EndDate;
-
---    -- Verifica disponibilidad exacta
---    IF EXISTS (
---        SELECT 1
---        FROM Room R
---        INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
---        INNER JOIN Season S ON GETDATE() BETWEEN S.StartDate AND S.EndDate
---        WHERE S.IsActive = 1
---          AND R.RoomTypeId = @RoomType 
---          AND R.RoomId NOT IN (
---              SELECT B.RoomId
---              FROM Booking B
---              WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
+    
+--    -- Verificar si existe una temporada activa
+--    DECLARE @SeasonPercent DECIMAL(10,2) = 0;
+--    DECLARE @IsHighSeason BIT = 0;
+--    DECLARE @HasActiveSeason BIT = 0;
+    
+--    SELECT TOP 1 
+--        @SeasonPercent = S.[Percent],
+--        @IsHighSeason = S.IsHigh,
+--        @HasActiveSeason = 1
+--    FROM Season S
+--    WHERE S.IsActive = 1
+--      AND GETDATE() BETWEEN S.StartDate AND S.EndDate;
+    
+--IF EXISTS (
+--    SELECT 1
+--    FROM Room R
+--    INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
+--    WHERE R.RoomTypeId = @RoomType AND R.Status !=1
+--      AND R.RoomId NOT IN (
+--          SELECT B.RoomId
+--          FROM Booking B
+--          WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
+--          AND NOT (
+--            CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
+--            DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
 --          )
---    )
---    BEGIN
---        SELECT TOP 1 
---            R.RoomNumber, 
---            R.RoomId,
---            R.RoomTypeId,
---            RT.RoomTypeName,
---            RT.Description,
---            CAST(@NumNights * RT.Price * 
---                (1 + CASE WHEN S.IsHigh = 1 THEN S.[Percent] / 100.0 ELSE -S.[Percent] / 100.0 END) *
---                (1 - @TotalDiscountPercent / 100.0) AS INT) AS Price,
---            RT.Image AS ImgUrl,
---            @StartTime AS CheckIn,
---            @EndTime AS CheckOut,
---            'Available' AS ResultType
---        FROM Room R
---        INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
---        INNER JOIN Season S ON GETDATE() BETWEEN S.StartDate AND S.EndDate
---        WHERE S.IsActive = 1
---          AND R.RoomTypeId = @RoomType
---          AND R.RoomId NOT IN (
---              SELECT B.RoomId
---              FROM Booking B
---              WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
---          );
---    END
+--      )
+--)
+--BEGIN
+--    DECLARE @SelectedRoomId INT;
+
+--    -- Primero obtén el RoomId y guárdalo en la variable
+--    SELECT TOP 1 
+--	@SelectedRoomId = R.RoomId
+--    FROM Room R
+--    INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
+--    WHERE R.RoomTypeId = @RoomType AND R.Status !=1
+--      AND R.RoomId NOT IN (
+--          SELECT B.RoomId
+--          FROM Booking B
+--          WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
+--          AND NOT (
+--            CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
+--            DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
+--          )
+--      );
+
+--    -- Luego haz el UPDATE
+--    UPDATE Room
+--    SET Status = 1
+--    WHERE RoomId = @SelectedRoomId;
+
+--    -- Y ahora sí puedes mostrar todos los datos de la habitación seleccionada
+--    SELECT TOP 1 
+--        R.RoomNumber, 
+--        R.RoomId,
+--        R.RoomTypeId,
+--        RT.RoomTypeName,
+--        RT.Description,
+--        CAST(@NumNights * RT.Price * 
+--            (CASE 
+--                WHEN @HasActiveSeason = 1 THEN 
+--                    (1 + CASE WHEN @IsHighSeason = 1 THEN @SeasonPercent / 100.0 ELSE -@SeasonPercent / 100.0 END)
+--                ELSE 1.0
+--            END) *
+--            (1 - @TotalDiscountPercent / 100.0) AS INT) AS Price,
+--        RT.Image AS ImgUrl,
+--        @StartTime AS CheckIn,
+--        @EndTime AS CheckOut,
+--        'Available' AS ResultType
+--    FROM Room R
+--    INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId 
+--    WHERE R.RoomId = @SelectedRoomId;
+--END
+
 --    ELSE IF EXISTS (
 --        SELECT 1
 --        FROM Room R
 --        INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
---        INNER JOIN Season S ON GETDATE() BETWEEN S.StartDate AND S.EndDate
---        WHERE S.IsActive = 1
---          AND R.RoomId NOT IN (
+--        WHERE R.RoomId NOT IN (
 --              SELECT B.RoomId
 --              FROM Booking B
 --              WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
+--              AND NOT (
+--                -- Permite reservar si el check-in es el mismo día que otro check-out,
+--                -- pero a partir de las 12:00
+--                CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
+--                DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
+--              )
 --          )
 --    )
 --    BEGIN
@@ -142,23 +169,31 @@
 --            RT.RoomTypeName,
 --            RT.Description,
 --            CAST(@NumNights * RT.Price * 
---                (1 + CASE WHEN S.IsHigh = 1 THEN S.[Percent] / 100.0 ELSE -S.[Percent] / 100.0 END) *
+--                (CASE 
+--                    WHEN @HasActiveSeason = 1 THEN 
+--                        (1 + CASE WHEN @IsHighSeason = 1 THEN @SeasonPercent / 100.0 ELSE -@SeasonPercent / 100.0 END)
+--                    ELSE 1.0 -- Sin ajuste de temporada si no hay temporada activa
+--                END) *
 --                (1 - @TotalDiscountPercent / 100.0) AS INT) AS Price,
 --            RT.Image AS ImgUrl,
 --            @StartTime AS CheckIn,
 --            @EndTime AS CheckOut,
 --            'Recommendation' AS ResultType
 --        FROM Room R
---        INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
---        INNER JOIN Season S ON GETDATE() BETWEEN S.StartDate AND S.EndDate
---        WHERE S.IsActive = 1
---          AND R.RoomId NOT IN (
+--        INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId 
+--        WHERE R.Status !=1 AND R.RoomId NOT IN (
 --              SELECT B.RoomId
 --              FROM Booking B
 --              WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
+--              AND NOT (
+--                -- Permite reservar si el check-in es el mismo día que otro check-out,
+--                -- pero a partir de las 12:00
+--                CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
+--                DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
+--              )
 --          );
 --    END
---       ELSE
+--    ELSE
 --    BEGIN
 --        -- Busca la primera fecha disponible a partir del @EndTime
 --        DECLARE @AltStart DATETIME = @EndTime;
@@ -174,17 +209,20 @@
 --                SELECT 1
 --                FROM Room R
 --                INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
---                INNER JOIN Season S ON GETDATE() BETWEEN S.StartDate AND S.EndDate
---                WHERE S.IsActive = 1
---                  AND R.RoomTypeId = @RoomType
+--                WHERE R.RoomTypeId = @RoomType AND R.Status !=1
 --                  AND R.RoomId NOT IN (
 --                      SELECT B.RoomId
 --                      FROM Booking B
 --                      WHERE (@AltStart < B.CheckOut AND @AltEnd > B.CheckIn)
+--                      AND NOT (
+--                        -- Permite reservar si el check-in es el mismo día que otro check-out,
+--                        -- pero a partir de las 12:00
+--                        CAST(@AltStart AS DATE) = CAST(B.CheckOut AS DATE) AND 
+--                        DATEPART(HOUR, @AltStart) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
+--                      )
 --                  )
 --            )
 --            BEGIN
-             
 --                SELECT TOP 1 
 --                    R.RoomNumber, 
 --                    R.RoomId,
@@ -192,7 +230,11 @@
 --                    RT.RoomTypeName,
 --                    RT.Description,
 --                    CAST(@NumNights * RT.Price * 
---                        (1 + CASE WHEN S.IsHigh = 1 THEN S.[Percent] / 100.0 ELSE -S.[Percent] / 100.0 END) *
+--                        (CASE 
+--                            WHEN @HasActiveSeason = 1 THEN 
+--                                (1 + CASE WHEN @IsHighSeason = 1 THEN @SeasonPercent / 100.0 ELSE -@SeasonPercent / 100.0 END)
+--                            ELSE 1.0 -- Sin ajuste de temporada si no hay temporada activa
+--                        END) *
 --                        (1 - @TotalDiscountPercent / 100.0) AS INT) AS Price,
 --                    RT.Image AS ImgUrl,
 --                    @AltStart AS CheckIn,
@@ -200,13 +242,17 @@
 --                    'AlternativeDates' AS ResultType
 --                FROM Room R
 --                INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
---                INNER JOIN Season S ON GETDATE() BETWEEN S.StartDate AND S.EndDate
---                WHERE S.IsActive = 1
---                  AND R.RoomTypeId = @RoomType
+--                WHERE R.RoomTypeId = @RoomType AND R.Status !=1
 --                  AND R.RoomId NOT IN (
 --                      SELECT B.RoomId
 --                      FROM Booking B
 --                      WHERE (@AltStart < B.CheckOut AND @AltEnd > B.CheckIn)
+--                      AND NOT (
+--                        -- Permite reservar si el check-in es el mismo día que otro check-out,
+--                        -- pero a partir de las 12:00
+--                        CAST(@AltStart AS DATE) = CAST(B.CheckOut AS DATE) AND 
+--                        DATEPART(HOUR, @AltStart) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
+--                      )
 --                  );
 
 --                BREAK;
@@ -216,40 +262,44 @@
 --            SET @AltStart = DATEADD(DAY, 1, @AltStart);
 --            SET @DaysChecked += 1;
 --        END
---		IF @DaysChecked = @MaxSearchDays
---BEGIN
---    SELECT 
---        NULL AS RoomNumber, 
---        NULL AS RoomId,
---        @RoomType AS RoomTypeId,
---        NULL AS RoomTypeName,
---        NULL AS Description,
---        NULL AS Price,
---        NULL AS ImgUrl,
---        NULL AS CheckIn,
---        NULL AS CheckOut,
---        'NoAvailability' AS ResultType;
---      END
+        
+--        IF @DaysChecked = @MaxSearchDays
+--        BEGIN
+--            SELECT 
+--                NULL AS RoomNumber, 
+--                NULL AS RoomId,
+--                @RoomType AS RoomTypeId,
+--                NULL AS RoomTypeName,
+--                NULL AS Description,
+--                NULL AS Price,
+--                NULL AS ImgUrl,
+--                NULL AS CheckIn,
+--                NULL AS CheckOut,
+--                'NoAvailability' AS ResultType;
+--        END
 --    END -- Fin ELSE final (AlternativeDates)
 --END -- Fin del procedimiento
 
-
-		
 EXEC [dbo].[sp_check_availability]
-			@RoomType =1,
-			@StartTime = N'2025-04-19',
-			@EndTime = N'2025-04-25'
+			@RoomType =5,
+			@StartTime = N'2025-05-19',
+			@EndTime = N'2025-05-25'
 
-		delete Booking
+		delete booking
 		
 		select * 
-		from Booking
+		from room
+
+		select * 
+		from booking
+
+
 
 		update room
 		set Status=0 
 
 		select *
-		from Room
+		from Season
 
 --	delete from Booking
 -----------------------sp reserva--------------------------------------
@@ -259,7 +309,7 @@ EXEC [dbo].[sp_check_availability]
 --    @CustomerLastName nvarchar(max),
 --    @CustomerEmail nvarchar(max),
 --    @CardNumber nvarchar(max),
---	    @RoomID INT,
+--	@RoomID INT,
 --    @CheckIn datetime2(7),
 --    @CheckOut datetime2(7),
 --    @Transaction INT
@@ -324,12 +374,9 @@ EXEC [dbo].[sp_check_availability]
 --            @Transaction,
 --            1                           
 --        );
-
---		----Actualizar estado de habitación
---		Update Room
---		SET Status = 1
---		WHERE RoomId=  @RoomID;
-        
+--         UPDATE ROOM
+--		  SET STATUS = 0
+--		  WHERE RoomId=@RoomID ;
 --         ----Confirmar la transacción
 --        COMMIT TRANSACTION;
         
@@ -358,3 +405,23 @@ EXEC [dbo].[sp_check_availability]
 --            ERROR_LINE() AS ErrorLine;
 --    END CATCH;
 --END;
+
+
+
+---------Sp actualizar habitación en 0 después de estar desabilitada para evitar concurrencia'------
+--CREATE PROCEDURE sp_enable_room
+--@RoomId INT
+--	AS
+--	BEGIN
+--		SET NOCOUNT ON;
+--		UPDATE Room
+--		SET Status = 0
+--		WHERE RoomId=@RoomId
+--	END;
+
+---------para el job que desocupa las habitaciones----------------------
+--UPDATE b
+--SET b.IsActive = 0
+--FROM Booking b
+--WHERE b.CheckOut = CONVERT(date, GETDATE())
+--  AND b.IsActive = 1;

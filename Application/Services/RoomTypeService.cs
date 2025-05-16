@@ -16,7 +16,6 @@ namespace Application.Services
         {
             _roomTypeRepository = roomTypeRepository;
         }
-
         public async Task<List<RoomTypeDTO>> GetAllRoomType()
         {
            var roomTypes = await _roomTypeRepository.GetAllRoomType();
@@ -24,11 +23,8 @@ namespace Application.Services
            {
                RoomTypeID = r.RoomTypeId,
                RoomTypeName = r.RoomTypeName,
-
            }).ToList();
-
         }
-
         public async Task<List<RoomTypeDTO>> GetRoomRatePage()
         {
             var roomTypes = await _roomTypeRepository.GetAllRoomTypeBySeason();
