@@ -27,7 +27,7 @@ namespace Infrastructure.Data
         {
             using SqlConnection connection = CreateConnection();
             var result = await connection.QueryAsync<Season>(
-                "GetAllSeasons",
+                "GetAllCompleteSeasons",
                 commandType: CommandType.StoredProcedure
             );
             return result.ToList();
@@ -37,7 +37,7 @@ namespace Infrastructure.Data
         {
             using SqlConnection connection = CreateConnection();
             var result = await connection.QueryFirstOrDefaultAsync<Season>(
-                "GetSeasonById",
+                "GetCompleteSeasonById",
                 new { SeasonID = id },
                 commandType: CommandType.StoredProcedure
             );

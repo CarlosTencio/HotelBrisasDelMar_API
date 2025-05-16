@@ -66,6 +66,7 @@ namespace Infrastructure.Data
                     commandType: System.Data.CommandType.StoredProcedure
                 );
             }
+        }
 
         public async Task<List<StatusRoom>> GetAllHotelStatusRooms()
         {
