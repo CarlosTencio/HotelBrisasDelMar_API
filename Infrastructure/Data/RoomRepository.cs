@@ -52,7 +52,19 @@ namespace Infrastructure.Data
             }
         }
 
+        public async Task<List<StatusRoom>> GetAllHotelStatusRooms()
+        {
+            using SqlConnection connection = CreateConnection();
 
+            await connection.OpenAsync();
+
+            var rooms = await connection.QueryAsync<StatusRoom>(
+                "sp_getHotelRoomStatusToday",
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+
+            return rooms.ToList();
+        }
     }
 
 

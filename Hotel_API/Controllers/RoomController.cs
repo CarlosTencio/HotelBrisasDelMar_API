@@ -35,5 +35,19 @@ namespace Hotel_API.Controllers
             }
         }
 
+        [HttpGet("status-room")]
+        public async Task<ActionResult<List<StatusRoomDTO?>>> StatusRoom()
+        {
+            try
+            {
+                var rooms = await _roomService.StatusRoom();
+                return Ok(rooms);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"Ocurrió un error al obtener el estado de las habitaciones: {ex.Message}");
+            }
+        }
     }
 }

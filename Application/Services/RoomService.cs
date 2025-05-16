@@ -44,6 +44,16 @@ namespace Application.Services
             };
         }
 
+        public async Task<List<StatusRoomDTO?>> StatusRoom()
+        {
+            var rooms = await _roomRepository.GetAllHotelStatusRooms();
 
+            return rooms.Select(room => new StatusRoomDTO
+            {
+                RoomNumber = room.RoomNumber,
+                RoomTypeName = room.RoomTypeName,
+                Status = room.Status
+            }).ToList();
+        }
     }
 }

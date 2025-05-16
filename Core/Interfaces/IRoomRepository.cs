@@ -6,5 +6,7 @@ namespace Core.Interfaces
     public interface IRoomRepository
     {
         Task<AvailabilityRoom?> CheckAvailability(AvailabilityCriterion availabilityCriterion);
+
+        Task<List<StatusRoom>> GetAllHotelStatusRooms();
     }
 }
