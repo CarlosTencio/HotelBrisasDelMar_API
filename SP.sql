@@ -255,3 +255,68 @@ INSERT INTO Season
 -- END
 
 --Exec sp_get_RoomType_season
+
+
+---------HOME PAGE UPDATE---------
+
+-- ----Este tipo de tabla le permite al procedimiento almacenado recibir múltiples strings
+-- CREATE TYPE dbo.StringList AS TABLE
+-- (
+--     Value NVARCHAR(MAX)
+-- );
+-- ---------------
+
+-- CREATE PROCEDURE UpdatePageWithImagesByTitle
+--     @PageTitle NVARCHAR(255),
+--     @PageContent NVARCHAR(MAX),
+--     @ImagePaths dbo.StringList READONLY
+-- AS
+-- BEGIN
+--     SET NOCOUNT ON;
+
+--     DECLARE @PageID INT;
+
+--     -- Obtener el ID de la página a actualizar
+--     SELECT @PageID = PageID FROM Page WHERE PageTitle = @PageTitle;
+
+--     IF @PageID IS NULL
+--     BEGIN
+--         -- No se encontró la página
+--         SELECT 0 AS Resultado;
+--         RETURN;
+--     END
+
+--     -- Actualizar el contenido de la página
+--     UPDATE Page
+--     SET PageContent = @PageContent
+--     WHERE PageID = @PageID;
+
+--     -- Eliminar relaciones anteriores en PageImage
+--     DELETE FROM PageImage WHERE PageID = @PageID;
+
+--     -- Agregar nuevas imágenes y sus relaciones
+--     DECLARE @ImageID INT;
+--     DECLARE @Path NVARCHAR(MAX);
+
+--     DECLARE image_cursor CURSOR FOR
+--         SELECT Value FROM @ImagePaths;
+
+--     OPEN image_cursor;
+--     FETCH NEXT FROM image_cursor INTO @Path;
+
+--     WHILE @@FETCH_STATUS = 0
+--     BEGIN
+--         INSERT INTO Image (ImagePath) VALUES (@Path);
+--         SET @ImageID = SCOPE_IDENTITY();
+
+--         INSERT INTO PageImage (PageID, ImageID) VALUES (@PageID, @ImageID);
+
+--         FETCH NEXT FROM image_cursor INTO @Path;
+--     END
+
+--     CLOSE image_cursor;
+--     DEALLOCATE image_cursor;
+
+--     -- Todo salió bien
+--     SELECT 1 AS Resultado;
+-- END;
