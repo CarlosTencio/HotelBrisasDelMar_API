@@ -43,5 +43,32 @@ namespace Hotel_API.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("UpdateRoomTypeData")]
+        public async Task<IActionResult> UpdateRoomTypeData([FromBody] RoomTypeDTO roomTypeDto)
+        {
+            try
+            {
+                if (roomTypeDto == null)
+                {
+                    return BadRequest("Los datos del tipo de habitación son inválidos.");
+                }
+                var response = await _roomTypeService.UpdateRoomTypeData(roomTypeDto);
+                if (response.Code == 0)
+                {
+                    return Ok(response.Message);
+                }
+                else
+                {
+                    return BadRequest(response.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"Ocurrió un error al actualizar el tipo de habitación: {ex.Message}");
+            }
+        }
+
     }
 }

@@ -1,11 +1,13 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.ValueObjects;
 using Dapper;
 using Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +51,58 @@ namespace Infrastructure.Data
                 commandType: System.Data.CommandType.StoredProcedure
             );
             return roomTypes.ToList();
+        }
+
+        public async Task<UpdateTypeRoomResult> UpdateRoomTypeData(RoomType roomType)
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            using SqlCommand command = new SqlCommand("sp_update_RoomType", connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            // Agregar parámetros al comando
+            command.Parameters.Add(new SqlParameter("@RoomTypeId", SqlDbType.Int) { Value = roomType.RoomTypeId });
+            command.Parameters.Add(new SqlParameter("@Price", SqlDbType.Int) { Value = roomType.Price });
+            command.Parameters.Add(new SqlParameter("@Characteristics", SqlDbType.NVarChar, -1) { Value = roomType.Characteristics ?? (object)DBNull.Value });
+            command.Parameters.Add(new SqlParameter("@Description", SqlDbType.NVarChar, -1) { Value = roomType.description ?? (object)DBNull.Value });
+            command.Parameters.Add(new SqlParameter("@Img", SqlDbType.NVarChar, -1) { Value = roomType.Image ?? (object)DBNull.Value });
+
+            try
+            {
+                using SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                if (await reader.ReadAsync())
+                {
+                    return new UpdateTypeRoomResult
+                    {
+                        Code = reader.GetInt32("Codigo"),
+                        Message = reader.GetString("Mensaje")
+                    };
+                }
+                return new UpdateTypeRoomResult
+                {
+                    Code = -1,
+                    Message = "Error inesperado al ejecutar el procedimiento almacenado."
+                };
+            }
+            catch (SqlException ex)
+            {
+                return new UpdateTypeRoomResult
+                {
+                    Code = -1,
+                    Message = $"Error de base de datos: {ex.Message}"
+                };
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores generales
+                return new UpdateTypeRoomResult
+                {
+                    Code = -1,
+                    Message = $"Error inesperado: {ex.Message}"
+                };
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Application.DTOs;
+using Core.Entities;
+using Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,6 @@ namespace Application.Interfaces
     {
         Task<List<RoomTypeDTO>> GetAllRoomType();
         Task<List<RoomTypeDTO>> GetRoomRatePage();
+        Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto);
     }
 }

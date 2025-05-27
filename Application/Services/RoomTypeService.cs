@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
+using Core.Entities;
 using Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,26 @@ namespace Application.Services
                 Image = r.Image,
             }).ToList();
 
+        }
+
+        public Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto)
+        {
+            RoomType roomType = new RoomType
+            {
+                RoomTypeId = roomTypedto.RoomTypeID,
+                RoomTypeName = roomTypedto.RoomTypeName,
+                Price = roomTypedto.Price,
+                Characteristics = roomTypedto.Characteristics,
+                description = roomTypedto.Description,
+                Image = roomTypedto.Image
+            };
+            var response = _roomTypeRepository.UpdateRoomTypeData(roomType);
+
+            return response.ContinueWith(response => new UpdateTypeRoomResultDto
+            {
+                Code = response.Result.Code,
+                Message = response.Result.Message
+            });
         }
     }
 }

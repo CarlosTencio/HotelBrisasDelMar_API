@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Core.Interfaces
     {
         Task<List<RoomType>> GetAllRoomType();
         Task<List<RoomType>> GetAllRoomTypeBySeason();
+        Task<UpdateTypeRoomResult> UpdateRoomTypeData(RoomType roomType);
     }
 }
