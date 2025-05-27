@@ -57,7 +57,6 @@ namespace Infrastructure.Data
         {
             using SqlConnection connection = CreateConnection();
             await connection.OpenAsync();
-
             using SqlCommand command = new SqlCommand("sp_update_RoomType", connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -71,20 +70,14 @@ namespace Infrastructure.Data
             try
             {
                 using SqlDataReader reader = await command.ExecuteReaderAsync();
-
                 if (await reader.ReadAsync())
                 {
                     return new UpdateTypeRoomResult
                     {
-                        Code = reader.GetInt32("Codigo"),
-                        Message = reader.GetString("Mensaje")
+                        Code = reader.GetInt32("Code"), 
+                        Message = reader.GetString("Message")
                     };
                 }
-                return new UpdateTypeRoomResult
-                {
-                    Code = -1,
-                    Message = "Error inesperado al ejecutar el procedimiento almacenado."
-                };
             }
             catch (SqlException ex)
             {
@@ -94,15 +87,12 @@ namespace Infrastructure.Data
                     Message = $"Error de base de datos: {ex.Message}"
                 };
             }
-            catch (Exception ex)
+
+            return new UpdateTypeRoomResult
             {
-                // Manejo de errores generales
-                return new UpdateTypeRoomResult
-                {
-                    Code = -1,
-                    Message = $"Error inesperado: {ex.Message}"
-                };
-            }
+                Code = -1,
+                Message = "No se pudo procesar la actualización"
+            };
         }
         public async Task<RoomType?> GetRoomTypeByName(string roomTypeName)
         {

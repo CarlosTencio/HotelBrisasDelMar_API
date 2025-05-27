@@ -59,8 +59,7 @@ namespace Application.Services
                 Image = roomType.Image,
             });
         }
-
-        public Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto)
+        public async Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto)
         {
             RoomType roomType = new RoomType
             {
@@ -71,13 +70,14 @@ namespace Application.Services
                 description = roomTypedto.Description,
                 Image = roomTypedto.Image
             };
-            var response = _roomTypeRepository.UpdateRoomTypeData(roomType);
 
-            return response.ContinueWith(response => new UpdateTypeRoomResultDto
+            var response = await _roomTypeRepository.UpdateRoomTypeData(roomType);
+
+            return new UpdateTypeRoomResultDto
             {
-                Code = response.Result.Code,
-                Message = response.Result.Message
-            });
+                Code = response.Code,
+                Message = response.Message
+            };
         }
     }
 }
