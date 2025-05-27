@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
 using Application.Services;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotel_API.Controllers
@@ -42,6 +43,17 @@ namespace Hotel_API.Controllers
                 return StatusCode(500, $"Ocurrió un error al obtener las páginas: {ex.Message}");
             }
         }
+
+        [HttpGet("{roomTypeName}")]
+        public async Task<IActionResult> GetRoomType(string roomTypeName)
+        {
+            var result = await _roomTypeService.GetRoomTypeByName(roomTypeName);
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
 
     }
 }

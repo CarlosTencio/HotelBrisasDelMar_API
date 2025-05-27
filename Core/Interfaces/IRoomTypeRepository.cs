@@ -11,5 +11,6 @@ namespace Core.Interfaces
     {
         Task<List<RoomType>> GetAllRoomType();
         Task<List<RoomType>> GetAllRoomTypeBySeason();
+        Task<RoomType?> GetRoomTypeByName(string roomTypeName);
     }
 }
