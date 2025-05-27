@@ -104,5 +104,17 @@ namespace Infrastructure.Data
                 };
             }
         }
+        public async Task<RoomType?> GetRoomTypeByName(string roomTypeName)
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            var roomType = await connection.QueryFirstOrDefaultAsync<RoomType>(
+                "sp_get_all_RoomType_Info",
+                new { RoomTypeName = roomTypeName },
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+            return (RoomType?)roomType;
+        }
     }
 }

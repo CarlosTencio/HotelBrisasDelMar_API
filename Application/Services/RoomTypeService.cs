@@ -42,6 +42,24 @@ namespace Application.Services
 
         }
 
+        public async Task<RoomTypeDTO?> GetRoomTypeByName(string roomTypeName)
+        {
+            var roomType = await _roomTypeRepository.GetRoomTypeByName(roomTypeName);
+            if (roomType == null)
+            {
+                return await Task.FromResult<RoomTypeDTO?>(null);
+            }
+            return await Task.FromResult(new RoomTypeDTO
+            {
+                RoomTypeID = roomType.RoomTypeId,
+                RoomTypeName = roomType.RoomTypeName,
+                Price = roomType.Price,
+                Characteristics = roomType.Characteristics,
+                Description = roomType.description,
+                Image = roomType.Image,
+            });
+        }
+
         public Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto)
         {
             RoomType roomType = new RoomType
