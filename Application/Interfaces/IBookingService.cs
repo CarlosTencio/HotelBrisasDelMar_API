@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Application.Interfaces
     public interface IBookingService
     {
         Task<BookingResponseDTO> CreateBooking(BookingDTO bookingDTO);
-      
+        Task<IEnumerable<InformationBookingDTO>> AllBooking(int page);
+        Task<bool> DeleteBooking(int idBooking);
     }
 }

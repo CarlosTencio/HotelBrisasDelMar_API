@@ -31,5 +31,19 @@ namespace Hotel_API.Controllers
             }
 
         }
+        [HttpGet("AllBooking")]
+        public async Task<ActionResult<BookingResponseDTO>> AllBooking(int page)
+        {
+            var allboking = await _bookingService.AllBooking(page);
+            return Ok(allboking); // <- Ahora se retorna el resultado del Task, no el Task
+
+        }
+        [HttpDelete("DeleteBooking")]
+        public async Task<IActionResult> DeleteBooking(int idBooking)
+        {
+            bool response = await _bookingService.DeleteBooking(idBooking);
+
+            return Ok(new { respuesta = response });
+        }
     }
 }
