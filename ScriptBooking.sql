@@ -58,7 +58,7 @@ CREATE PROCEDURE sp_check_availability
 AS
 BEGIN
     SET NOCOUNT ON;
-    -- Calcular número de noches
+    -- Calcular nÃºmero de noches
     DECLARE @NumNights INT;
     SET @NumNights = DATEDIFF(DAY, @StartTime, @EndTime);
 
@@ -100,7 +100,7 @@ IF EXISTS (
 BEGIN
     DECLARE @SelectedRoomId INT;
 
-    -- Primero obtén el RoomId y guárdalo en la variable
+    -- Primero obtÃ©n el RoomId y guÃ¡rdalo en la variable
     SELECT TOP 1 
 	@SelectedRoomId = R.RoomId
     FROM Room R
@@ -121,7 +121,7 @@ BEGIN
     SET Status = 1
     WHERE RoomId = @SelectedRoomId;
 
-    -- Y ahora sí puedes mostrar todos los datos de la habitación seleccionada
+    -- Y ahora sÃ­ puedes mostrar todos los datos de la habitaciÃ³n seleccionada
     SELECT TOP 1 
         R.RoomNumber, 
         R.RoomId,
@@ -153,7 +153,7 @@ END
               FROM Booking B
               WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
               AND NOT (
-                -- Permite reservar si el check-in es el mismo día que otro check-out,
+                -- Permite reservar si el check-in es el mismo dÃ­a que otro check-out,
                 -- pero a partir de las 12:00
                 CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
                 DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
@@ -161,7 +161,7 @@ END
           )
     )
     BEGIN
-        -- Otra habitación de diferente tipo en el mismo rango de fechas
+        -- Otra habitaciÃ³n de diferente tipo en el mismo rango de fechas
         SELECT TOP 1 
             R.RoomNumber, 
             R.RoomId,
@@ -186,7 +186,7 @@ END
               FROM Booking B
               WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
               AND NOT (
-                -- Permite reservar si el check-in es el mismo día que otro check-out,
+                -- Permite reservar si el check-in es el mismo dÃ­a que otro check-out,
                 -- pero a partir de las 12:00
                 CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
                 DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
@@ -198,7 +198,7 @@ END
         -- Busca la primera fecha disponible a partir del @EndTime
         DECLARE @AltStart DATETIME = @EndTime;
         DECLARE @AltEnd DATETIME;
-        DECLARE @MaxSearchDays INT = 30; -- Máximo de días que puede recomendar
+        DECLARE @MaxSearchDays INT = 30; -- MÃ¡ximo de dÃ­as que puede recomendar
         DECLARE @DaysChecked INT = 0;
 
         WHILE @DaysChecked < @MaxSearchDays
@@ -215,7 +215,7 @@ END
                       FROM Booking B
                       WHERE (@AltStart < B.CheckOut AND @AltEnd > B.CheckIn)
                       AND NOT (
-                        -- Permite reservar si el check-in es el mismo día que otro check-out,
+                        -- Permite reservar si el check-in es el mismo dÃ­a que otro check-out,
                         -- pero a partir de las 12:00
                         CAST(@AltStart AS DATE) = CAST(B.CheckOut AS DATE) AND 
                         DATEPART(HOUR, @AltStart) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
@@ -248,7 +248,7 @@ END
                       FROM Booking B
                       WHERE (@AltStart < B.CheckOut AND @AltEnd > B.CheckIn)
                       AND NOT (
-                        -- Permite reservar si el check-in es el mismo día que otro check-out,
+                        -- Permite reservar si el check-in es el mismo dÃ­a que otro check-out,
                         -- pero a partir de las 12:00
                         CAST(@AltStart AS DATE) = CAST(B.CheckOut AS DATE) AND 
                         DATEPART(HOUR, @AltStart) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
@@ -258,7 +258,7 @@ END
                 BREAK;
             END
 
-            -- Si no encontró, prueba siguiente día
+            -- Si no encontrÃ³, prueba siguiente dÃ­a
             SET @AltStart = DATEADD(DAY, 1, @AltStart);
             SET @DaysChecked += 1;
         END
@@ -318,7 +318,7 @@ BEGIN
     SET NOCOUNT ON;
     
     BEGIN TRY
-         ----Iniciar la transacción
+         ----Iniciar la transacciÃ³n
         BEGIN TRANSACTION;
         
         DECLARE @CustomerID INT;
@@ -344,11 +344,11 @@ BEGIN
                 @CardNumber
             );
             
-             ----Obtener el ID del cliente recién insertado
+             ----Obtener el ID del cliente reciÃ©n insertado
             SET @CustomerID = SCOPE_IDENTITY();
         END;
         
-         ----Generar número de referencia único
+         ----Generar nÃºmero de referencia Ãºnico
         DECLARE @BookingReference nvarchar(max);
         SET @BookingReference = 'RES-' + CONVERT(VARCHAR(8), GETDATE(), 112) + 
                                '-' + RIGHT('000000' + CAST(ABS(CHECKSUM(NEWID())) % 1000000 AS VARCHAR(6)), 6);
@@ -377,10 +377,10 @@ BEGIN
          UPDATE ROOM
 		  SET STATUS = 0
 		  WHERE RoomId=@RoomID ;
-         ----Confirmar la transacción
+         ----Confirmar la transacciÃ³n
         COMMIT TRANSACTION;
         
-         ----Devuelve información sobre la operación exitosa
+         ----Devuelve informaciÃ³n sobre la operaciÃ³n exitosa
         SELECT 
             'Success' AS Status,
             @BookingReference AS BookingReference,
@@ -390,11 +390,11 @@ BEGIN
             
     END TRY
     BEGIN CATCH
-         ----Si ocurre algún error, hacer rollback
+         ----Si ocurre algÃºn error, hacer rollback
         IF @@TRANCOUNT > 0
             ROLLBACK TRANSACTION;
         
-         ----Devolver información del error
+         ----Devolver informaciÃ³n del error
         SELECT 
             'Error' AS Status,
             ERROR_MESSAGE() AS ErrorMessage,
@@ -406,9 +406,71 @@ BEGIN
     END CATCH;
 END;
 
+create PROCEDURE sp_view_all_bookings
+@page int
+AS
+BEGIN
+    SET NOCOUNT ON;
 
+    DECLARE @pageSize INT = 6;
+    DECLARE @offset INT = (@page - 1) * @pageSize;
 
----------Sp actualizar habitación en 0 después de estar desabilitada para evitar concurrencia'------
+    SELECT 
+        b.bookingid,
+        b.RoomID,
+        b.CreationDate,
+        b.CheckIn,
+        b.CheckOut,
+        b.CustomerID,
+        b.[Transaction],
+        b.BookingReferenceNumber,
+        c.CustomerName,
+        c.CustomerLastName,
+        c.CustomerEmail,
+        c.CardNumber,
+        rt.RoomTypeName
+        
+    FROM 
+        Booking b
+    JOIN 
+        Customer c ON b.customerid = c.customerid
+    JOIN 
+        Room r ON b.roomid = r.roomid
+    JOIN
+        RoomType rt ON r.roomtypeid = rt.roomtypeid
+    WHERE 
+        b.IsActive = 1
+    ORDER BY 
+        b.CheckIn DESC 
+   
+    OFFSET @offset ROWS
+    FETCH NEXT @pageSize ROWS ONLY;
+END;
+
+EXEC sp_view_all_bookings @page = 2;
+drop PROCEDURE sp_delete_booking
+CREATE PROCEDURE sp_delete_booking
+@bookingid INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Check if the booking exists
+    IF EXISTS (SELECT 1 FROM Booking WHERE BookingID = @bookingid AND IsActive = 1)
+    BEGIN
+        -- Mark the booking as inactive
+        DELETE FROM Booking
+        WHERE BookingID = @bookingid;
+
+        SELECT 'Booking deleted successfully.' AS Message;
+    END
+    ELSE
+    BEGIN
+        SELECT 'Booking not found or already inactive.' AS Message;
+    END
+END;
+
+---------Sp actualizar habitaciÃ³n en 0 despuÃ©s de estar desabilitada para evitar concurrencia'------
 --CREATE PROCEDURE sp_enable_room
 --@RoomId INT
 --	AS

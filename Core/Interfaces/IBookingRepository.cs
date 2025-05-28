@@ -11,6 +11,7 @@ namespace Core.Interfaces
     public interface IBookingRepository
     {
         Task<BookingResponse> CreateBooking(Booking booking);
-
+        Task<IEnumerable<InformationBooking>> AllBooking(int page);
+        Task<bool> DeleteBooking(int idBooking);
     }
 }
