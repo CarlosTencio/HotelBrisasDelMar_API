@@ -8,7 +8,7 @@ namespace Hotel_API.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class RoomController: ControllerBase
+    public class RoomController : ControllerBase
     {
         private readonly IRoomService _roomService;
         public RoomController(IRoomService roomService)
@@ -65,6 +65,38 @@ namespace Hotel_API.Controllers
                 Console.WriteLine(ex.Message);
                 return StatusCode(500, $"Ocurrió un error al obtener el estado de las habitaciones: {ex.Message}");
             }
+        }
+
+        [HttpGet("manage-active-rooms")]
+        public async Task<ActionResult<List<ManageActiveRoom>>> GetManageActiveRoomsAsync()
+        {
+            try
+            {
+                var rooms = await _roomService.GetManageActiveRoomsAsync();
+                return Ok(rooms);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"Ocurrió un error al obtener las habitaciones activas: {ex.Message}");
+            }
+
+        }
+
+        [HttpPut("update-room-active")]
+        public async Task<ActionResult<bool>> UpdateRoomActive([FromBody] RoomActiveDTO room)
+        {
+            try
+            {
+                var result = await _roomService.UpdateRoomActive(room);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, $"Ocurrió un error al actualizar la habitación activa: {ex.Message}");
+            }
+
         }
     }
 }

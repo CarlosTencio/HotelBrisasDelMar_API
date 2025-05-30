@@ -5,6 +5,7 @@ using Dapper;
 using Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 
 namespace Infrastructure.Data
@@ -12,7 +13,7 @@ namespace Infrastructure.Data
     public class RoomRepository : IRoomRepository
     {
         private readonly AppDbContext _context;
-    
+
         public RoomRepository(AppDbContext context)
         {
             _context = context;
@@ -80,6 +81,59 @@ namespace Infrastructure.Data
             );
 
             return rooms.ToList();
+        }
+
+        public async Task<List<ManageActiveRoom>> GetManageActiveRoomsAsync()
+        {
+            using var connection = CreateConnection();
+
+            var sql = "sp_getManageActiveRooms";
+
+            var roomDictionary = new Dictionary<int, ManageActiveRoom>();
+
+            var result = await connection.QueryAsync<ManageActiveRoom, RoomActive, ManageActiveRoom>(
+                sql,
+                (roomType, room) =>
+                {
+                    if (!roomDictionary.TryGetValue(roomType.RoomTypeId, out var manageRoom))
+                    {
+                        manageRoom = new ManageActiveRoom
+                        {
+                            RoomTypeId = roomType.RoomTypeId,
+                            RoomTypeName = roomType.RoomTypeName,
+                            roomActiveDTOs = new List<RoomActive>()
+                        };
+                        roomDictionary.Add(manageRoom.RoomTypeId, manageRoom);
+                    }
+
+                    ((List<RoomActive>)manageRoom.roomActiveDTOs).Add(room);
+                    return manageRoom;
+                },
+                splitOn: "RoomId",
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+
+            return roomDictionary.Values.ToList();
+        }
+
+        public async Task<bool> UpdateRoomActive(RoomActive Room)
+        {
+            using (var connection = CreateConnection())
+            {
+                var parameters = new
+                {
+                    RoomId = Room.RoomId,
+                    IsActice = Room.IsActice
+                };
+
+                var result = await connection.QuerySingleAsync<int>(
+                    "sp_UpdateRoomActive",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return result == 1;
+            }
         }
     }
 

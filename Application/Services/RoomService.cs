@@ -65,5 +65,37 @@ namespace Application.Services
             }).ToList();
 
         }
+
+        public async Task<List<ManageActiveRoomDTO>> GetManageActiveRoomsAsync()
+        {
+            var rooms = await _roomRepository.GetManageActiveRoomsAsync();
+
+            var result = rooms.Select(room => new ManageActiveRoomDTO
+            {
+                RoomTypeId = room.RoomTypeId,
+                RoomTypeName = room.RoomTypeName,
+                roomActiveDTOs = room.roomActiveDTOs.Select(r => new RoomActiveDTO
+                {
+                    RoomId = r.RoomId,
+                    IsActice = r.IsActice,
+                    RoomNumber = r.RoomNumber
+                }).ToList()
+            }).ToList();
+
+            return result;
+        }
+
+        public async Task<bool> UpdateRoomActive(RoomActiveDTO Room)
+        {
+
+            var room = new RoomActive
+            {
+                RoomId = Room.RoomId,
+                IsActice = Room.IsActice
+            };
+
+            return await _roomRepository.UpdateRoomActive(room);
+        }
+
     }
-}
+ }
