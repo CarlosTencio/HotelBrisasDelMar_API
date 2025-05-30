@@ -9,8 +9,11 @@ namespace Core.Interfaces
 
         Task UpdateRoomStatus(int roomId);
 
+        Task<List<ManageActiveRoom>> GetManageActiveRoomsAsync();
 
         Task<List<StatusRoom>> GetAllHotelStatusRooms();
+
+        Task<bool> UpdateRoomActive(RoomActive Room);
 
     }
 }

@@ -12,9 +12,13 @@ namespace Application.Interfaces
     {
         Task<AvailableRoomDTO?> CheckAvailabilty(AvailabilityCriterionDTO availabilityCriterion);
 
-        Task UpdateRoomStatus(int id);    
+        Task UpdateRoomStatus(int id);
 
-        Task<List<StatusRoomDTO?>> StatusRoom();  
+        Task<List<ManageActiveRoomDTO>> GetManageActiveRoomsAsync();
+
+        Task<List<StatusRoomDTO?>> StatusRoom();
+
+        Task<bool> UpdateRoomActive(RoomActiveDTO Room);
 
     }
 }
