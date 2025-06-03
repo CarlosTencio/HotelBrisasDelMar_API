@@ -59,7 +59,7 @@ namespace Application.Services
                 Image = roomType.Image,
             });
         }
-        public async Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto)
+        public async Task<ResponseDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto)
         {
             RoomType roomType = new RoomType
             {
@@ -73,7 +73,7 @@ namespace Application.Services
 
             var response = await _roomTypeRepository.UpdateRoomTypeData(roomType);
 
-            return new UpdateTypeRoomResultDto
+            return new ResponseDto
             {
                 Code = response.Code,
                 Message = response.Message

@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Core.Interfaces
     {
         Task<List<Page>> GetAllPagesWithImages();
         Task<List<Page>> GetOnePageWithImages(string facilities);
+        Task<Response> DeleteFacility(int facilityId);
     }
 }

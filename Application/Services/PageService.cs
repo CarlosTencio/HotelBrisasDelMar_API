@@ -12,6 +12,17 @@ namespace Application.Services
         public PageService(IPageRepository pageRepository) { 
             _pageRepository= pageRepository;
         }
+
+        public async Task<ResponseDto> DeleteFacility(int facilityId)
+        {
+           var response = await _pageRepository.DeleteFacility(facilityId);
+            return new ResponseDto
+            {
+                Code = response.Code,
+                Message = response.Message
+            };
+        }
+
         // En el servicio (capa de aplicación)
         public async Task<List<PageDTO>> GetAllPagesWithImagesDto()
         {

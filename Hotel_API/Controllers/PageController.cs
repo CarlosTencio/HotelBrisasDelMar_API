@@ -55,5 +55,23 @@ namespace Hotel_API.Controllers
                 return StatusCode(500, $"Ocurrió un error al obtener las páginas: {ex.Message}");
             }
         }
+        [HttpDelete("facility/{id}")]
+        public async Task<IActionResult> DeleteFacility(int id)
+        {
+            try
+            {
+                var result = await _pageService.DeleteFacility(id);
+                if (result.Code == 0)
+                {
+                    return Ok(new { message = result.Message });
+                }
+
+                return NotFound(new { message = "Facilidad no encontrada." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ocurrió un error interno. Inténtelo más tarde." });
+            }
+        }
     }
 }

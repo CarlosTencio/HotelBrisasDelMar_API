@@ -12,7 +12,7 @@ namespace Core.Interfaces
     {
         Task<List<RoomType>> GetAllRoomType();
         Task<List<RoomType>> GetAllRoomTypeBySeason();
-        Task<UpdateTypeRoomResult> UpdateRoomTypeData(RoomType roomType);
+        Task<Response> UpdateRoomTypeData(RoomType roomType);
         Task<RoomType?> GetRoomTypeByName(string roomTypeName);
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.ValueObjects
 {
-    public class UpdateTypeRoomResult
+    public class Response
     {
         public int Code { get; set; }
         public string Message { get; set; }
