@@ -53,7 +53,7 @@ namespace Infrastructure.Data
             return roomTypes.ToList();
         }
 
-        public async Task<UpdateTypeRoomResult> UpdateRoomTypeData(RoomType roomType)
+        public async Task<Response> UpdateRoomTypeData(RoomType roomType)
         {
             using SqlConnection connection = CreateConnection();
             await connection.OpenAsync();
@@ -72,7 +72,7 @@ namespace Infrastructure.Data
                 using SqlDataReader reader = await command.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
                 {
-                    return new UpdateTypeRoomResult
+                    return new Response
                     {
                         Code = reader.GetInt32("Code"), 
                         Message = reader.GetString("Message")
@@ -81,14 +81,14 @@ namespace Infrastructure.Data
             }
             catch (SqlException ex)
             {
-                return new UpdateTypeRoomResult
+                return new Response
                 {
                     Code = -1,
                     Message = $"Error de base de datos: {ex.Message}"
                 };
             }
 
-            return new UpdateTypeRoomResult
+            return new Response
             {
                 Code = -1,
                 Message = "No se pudo procesar la actualización"

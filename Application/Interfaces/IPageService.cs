@@ -11,5 +11,6 @@ namespace Application.Interfaces
     {
         Task<List<PageDTO>> GetAllPagesWithImagesDto();
         Task<List<PageDTO>> GetOnePageWithImages(string facilities);
+        Task<ResponseDto> DeleteFacility(int facilityId);
     }
 }

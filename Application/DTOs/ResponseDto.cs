@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.DTOs
 {
-    public class UpdateTypeRoomResultDto
+    public class ResponseDto
     {
         public int Code { get; set; }
         public string Message { get; set; }

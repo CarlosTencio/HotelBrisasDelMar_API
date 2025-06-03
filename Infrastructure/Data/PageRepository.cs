@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.ValueObjects;
 using Dapper;
 using Infrastructure.Persistence;
 using Microsoft.Data.SqlClient;
@@ -70,7 +71,7 @@ namespace Infrastructure.Data
 
             var pageDictionary = new Dictionary<int, Page>();
 
-                        await connection.QueryAsync<Page, Image, Page>(
+              await connection.QueryAsync<Page, Image, Page>(
                  "sp_get_facilities",
                  (page, image) =>
                  {
@@ -100,5 +101,34 @@ namespace Infrastructure.Data
              );
             return pageDictionary.Values.ToList();
         }
+
+        public async Task<Response> DeleteFacility(int facilityId)
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            using SqlCommand command = new SqlCommand("sp_deleteFacility", connection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.AddWithValue("@PageID", facilityId);
+
+            using SqlDataReader reader = await command.ExecuteReaderAsync();
+
+            Response response = new Response();
+
+            if (await reader.ReadAsync())
+            {
+                response.Code = reader.GetInt32(reader.GetOrdinal("CodigoResultado"));
+                response.Message = reader.GetString(reader.GetOrdinal("Mensaje"));
+            }
+            else
+            {
+                // En caso de que no retorne nada, aunque no debería pasar
+                response.Code = -1;
+                response.Message = "No se recibió respuesta del procedimiento.";
+            }
+
+            return response;
+        }
+
     }
 }

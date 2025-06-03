@@ -13,7 +13,7 @@ namespace Application.Interfaces
     {
         Task<List<RoomTypeDTO>> GetAllRoomType();
         Task<List<RoomTypeDTO>> GetRoomRatePage();
-        Task<UpdateTypeRoomResultDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto);
+        Task<ResponseDto> UpdateRoomTypeData(RoomTypeDTO roomTypedto);
         Task<RoomTypeDTO?> GetRoomTypeByName(string roomTypeName);
     }
 }
