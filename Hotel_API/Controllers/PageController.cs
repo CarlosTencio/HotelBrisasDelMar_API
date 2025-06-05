@@ -92,7 +92,7 @@ namespace Hotel_API.Controllers
 
         }
         [HttpPost("createFacility")]
-        public async Task<IActionResult> CreateFacility([FromQuery] string contentFacility, [FromQuery] string imagePath)
+        public async Task<IActionResult> CreateFacility(string contentFacility, string imagePath)
         {
             try
             {
