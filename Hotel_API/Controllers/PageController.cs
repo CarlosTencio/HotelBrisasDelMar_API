@@ -73,5 +73,41 @@ namespace Hotel_API.Controllers
                 return StatusCode(500, new { message = "Ocurrió un error interno. Inténtelo más tarde." });
             }
         }
+        [HttpPut("updateFacility")]
+        public async Task<IActionResult> UpdateFacility(int pageID, string pageContent, string imagePath)
+        {
+            try
+            {
+                bool result = await _pageService.UpdateFacility(pageID, pageContent, imagePath);
+                if (result)
+                {
+                    return Ok(new { message = "Facilidad actualizada correctamente." });
+                }
+                return NotFound(new { message = "Facilidad no encontrada." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ocurrió un error interno. Inténtelo más tarde." });
+            }
+
+        }
+        [HttpPost("createFacility")]
+        public async Task<IActionResult> CreateFacility([FromQuery] string contentFacility, [FromQuery] string imagePath)
+        {
+            try
+            {
+                bool result = await _pageService.CreateFacility(contentFacility, imagePath);
+                if (result)
+                {
+                    return Ok(new { message = "Facilidad creada correctamente." });
+                }
+                return BadRequest(new { message = "Error al crear la facilidad." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ocurrió un error interno. Inténtelo más tarde." });
+            }
+        }
     }
+
 }
