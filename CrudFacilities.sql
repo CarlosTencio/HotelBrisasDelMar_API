@@ -1,6 +1,48 @@
 --update facilities
 USE [HotelDB]
 GO
+-------Add facilidad--------------
+CREATE PROCEDURE sp_addFaclity
+@PageContent NVARCHAR(MAX),
+    @ImagePath NVARCHAR(MAX)
+AS
+BEGIN
+    BEGIN TRANSACTION;
+    
+    BEGIN TRY
+        DECLARE @NewPageID INT;
+        DECLARE @NewImageID INT;
+        
+        -- Insertar en tabla Page
+        INSERT INTO dbo.Page (PageTitle, PageContent)
+        VALUES ('Facilidades', @PageContent);
+        
+        -- Obtener el ID del Page recién insertado
+        SET @NewPageID = SCOPE_IDENTITY();
+        
+        -- Insertar en tabla Image
+        INSERT INTO dbo.Image (ImagePath)
+        VALUES (@ImagePath);
+        
+        -- Obtener el ID de la Image recién insertada
+        SET @NewImageID = SCOPE_IDENTITY();
+        
+        -- Insertar en tabla PageImage para relacionar Page e Image
+        INSERT INTO dbo.PageImage (PageID, ImageID)
+        VALUES (@NewPageID, @NewImageID);
+        
+        COMMIT TRANSACTION;
+        
+        -- Opcional: Retornar los IDs creados
+        SELECT @NewPageID AS NewPageID, @NewImageID AS NewImageID;
+        
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+    END CATCH
+
+END;
+
 
 ---Delete facilidad
 CREATE PROCEDURE [dbo].[sp_deleteFacility]
@@ -102,9 +144,9 @@ EXEC sp_updateFacility
  insert into [Image]  (ImagePath) values ('https://dynamic-media-cdn.tripadvisor.com/media/photo-o/01/22/b5/f0/piscina.jpg?w=1900&h=1400&s=1')
  insert into [Image]  (ImagePath) values ('https://media-cdn.tripadvisor.com/media/photo-s/1c/50/ee/77/acceso-para-cualquier.jpg')
  
- insert into PageImage (PageID,ImageID) VALUES (2051,2032)
- insert into PageImage (PageID,ImageID) VALUES (2052,2033)
- insert into PageImage (PageID,ImageID) VALUES (2053,2034)
+ insert into PageImage (PageID,ImageID) VALUES (2062,2046)
+ insert into PageImage (PageID,ImageID) VALUES (2063,2047)
+ insert into PageImage (PageID,ImageID) VALUES (2064,2048)
  insert into PageImage (PageID,ImageID) VALUES (2054,2035)
  insert into PageImage (PageID,ImageID) VALUES (2055,2036)
  insert into PageImage (PageID,ImageID) VALUES (2056,2037)
@@ -112,5 +154,5 @@ EXEC sp_updateFacility
  select * from Page
  SELECT * FROM Image
  select * from PageImage
- delete from PageImage
+ delete from Page
 
