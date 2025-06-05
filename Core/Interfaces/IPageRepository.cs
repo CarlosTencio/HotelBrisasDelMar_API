@@ -13,5 +13,7 @@ namespace Core.Interfaces
         Task<List<Page>> GetAllPagesWithImages();
         Task<List<Page>> GetOnePageWithImages(string facilities);
         Task<Response> DeleteFacility(int facilityId);
+        Task<bool> UpdateFacility(int pageID, string pageContent, string imagePath);
+        Task<bool> CreateFacility(string contentFacility, string imagePath);
     }
 }

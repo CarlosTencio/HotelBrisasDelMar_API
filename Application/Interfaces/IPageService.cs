@@ -12,5 +12,7 @@ namespace Application.Interfaces
         Task<List<PageDTO>> GetAllPagesWithImagesDto();
         Task<List<PageDTO>> GetOnePageWithImages(string facilities);
         Task<ResponseDto> DeleteFacility(int facilityId);
+        Task<bool> UpdateFacility(int pageID, string pageContent, string imagePath);
+        Task<bool> CreateFacility(string contentFacility, string imagePath);
     }
 }

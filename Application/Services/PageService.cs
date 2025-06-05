@@ -9,13 +9,14 @@ namespace Application.Services
 
         private readonly IPageRepository _pageRepository;
 
-        public PageService(IPageRepository pageRepository) { 
-            _pageRepository= pageRepository;
+        public PageService(IPageRepository pageRepository)
+        {
+            _pageRepository = pageRepository;
         }
 
         public async Task<ResponseDto> DeleteFacility(int facilityId)
         {
-           var response = await _pageRepository.DeleteFacility(facilityId);
+            var response = await _pageRepository.DeleteFacility(facilityId);
             return new ResponseDto
             {
                 Code = response.Code,
@@ -48,6 +49,17 @@ namespace Application.Services
                 PageContent = p.PageContent,
                 Images = p.PageImages.Select(pi => pi.Image.ImagePath).ToList()
             }).ToList();
+        }
+        public async Task<bool> UpdateFacility(int pageID, string pageContent, string imagePath)
+        {
+            bool result = await _pageRepository.UpdateFacility(pageID, pageContent, imagePath);
+            return result;
+        }
+
+        public async Task<bool> CreateFacility(string contentFacility, string imagePath)
+        {
+            bool result = await _pageRepository.CreateFacility(contentFacility, imagePath);
+            return result;
         }
     }
 }

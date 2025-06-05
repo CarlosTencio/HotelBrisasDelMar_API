@@ -71,34 +71,34 @@ namespace Infrastructure.Data
 
             var pageDictionary = new Dictionary<int, Page>();
 
-              await connection.QueryAsync<Page, Image, Page>(
-                 "sp_get_facilities",
-                 (page, image) =>
-                 {
-                     if (!pageDictionary.TryGetValue(page.PageID, out var existingPage))
-                     {
-                         existingPage = page;
-                         existingPage.PageImages = new List<PageImage>();
-                         pageDictionary.Add(existingPage.PageID, existingPage);
-                     }
+            await connection.QueryAsync<Page, Image, Page>(
+               "sp_get_facilities",
+               (page, image) =>
+               {
+                   if (!pageDictionary.TryGetValue(page.PageID, out var existingPage))
+                   {
+                       existingPage = page;
+                       existingPage.PageImages = new List<PageImage>();
+                       pageDictionary.Add(existingPage.PageID, existingPage);
+                   }
 
-                     if (image != null && !string.IsNullOrEmpty(image.ImagePath))
-                     {
-                         existingPage.PageImages.Add(new PageImage
-                         {
-                             PageID = page.PageID,
-                             Page = existingPage,
-                             ImageID = image.PageImageID,
-                             Image = image
-                         });
-                     }
+                   if (image != null && !string.IsNullOrEmpty(image.ImagePath))
+                   {
+                       existingPage.PageImages.Add(new PageImage
+                       {
+                           PageID = page.PageID,
+                           Page = existingPage,
+                           ImageID = image.PageImageID,
+                           Image = image
+                       });
+                   }
 
-                     return existingPage;
-                 },
-                 param: new { PageTitle = facilities },
-                 splitOn: "ImagePath",
-                 commandType: CommandType.StoredProcedure
-             );
+                   return existingPage;
+               },
+               param: new { PageTitle = facilities },
+               splitOn: "ImagePath",
+               commandType: CommandType.StoredProcedure
+           );
             return pageDictionary.Values.ToList();
         }
 
@@ -130,5 +130,50 @@ namespace Infrastructure.Data
             return response;
         }
 
+        public async Task<bool> UpdateFacility(int pageId, string pageContent, string imagePath)
+        {
+            try
+            {
+                using SqlConnection connection = CreateConnection();
+                await connection.OpenAsync();
+
+                using SqlCommand command = new SqlCommand("sp_updateFacility", connection);
+                command.CommandType = CommandType.StoredProcedure;
+          
+
+                command.Parameters.AddWithValue("@PageID", pageId);
+                command.Parameters.AddWithValue("@PageContent", pageContent);
+                command.Parameters.AddWithValue("@ImagePath", imagePath);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                // Si se afectó al menos 1 fila = éxito
+                return rowsAffected > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> CreateFacility(string contentFacility, string imagePath)
+        {
+            try {
+                using SqlConnection connection = CreateConnection();
+                await connection.OpenAsync();
+
+                using SqlCommand command = new SqlCommand("sp_addFaclity", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@PageContent", contentFacility);
+                command.Parameters.AddWithValue("@ImagePath", imagePath);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+                return rowsAffected > 0;
+            }
+            catch{
+                return false;
+            }
+        }
     }
 }
