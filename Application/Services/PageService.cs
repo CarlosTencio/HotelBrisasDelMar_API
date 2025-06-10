@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
 using Core.Interfaces;
+using Core.ValueObjects;
 
 namespace Application.Services
 {
@@ -60,6 +61,43 @@ namespace Application.Services
         {
             bool result = await _pageRepository.CreateFacility(contentFacility, imagePath);
             return result;
+        }
+
+        public async Task<List<PageAboutUsDTO>> GetPageWithImagesAboutUs(string PageTitle)
+        {
+            var pages = await _pageRepository.GetPageWithImagesAboutUs(PageTitle);
+
+            return pages.Select(p => new PageAboutUsDTO
+            {
+                PageID = p.PageID,
+                PageTitle = p.PageTitle,
+                PageContent = p.PageContent,
+                Images = p.PageImages.Select(pi => new ImageDTO
+                {
+                    ImageID = pi.ImageID,
+                    ImagePath = pi.Image.ImagePath
+                }).ToList()
+            }).ToList();
+        }
+
+        public async Task<bool> DeleteImagePageAboutUs(int imageID)
+        {
+           return await _pageRepository.DeleteImagePageAboutUs(imageID);
+        }
+
+        public async Task<bool> InsertImagePageAboutUs(string ImagePath, int pageID)
+        {
+            return await _pageRepository.InsertImagePageAboutUs(ImagePath, pageID);
+        }
+
+        public async Task<bool> UpdateTextAboutUs(UpdateAboutUsDTO updateAboutUsDTO)
+        {
+            var updateAboutUs = new UpdateAboutUs
+            {
+                PageID = updateAboutUsDTO.PageID,
+                PageContent = updateAboutUsDTO.PageContent,
+            };
+            return await _pageRepository.UpdateTextAboutUs(updateAboutUs);
         }
     }
 }

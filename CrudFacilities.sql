@@ -156,3 +156,67 @@ EXEC sp_updateFacility
  select * from PageImage
  delete from Page
 
+ CREATE PROCEDURE sp_GetPageWithImagesAboutUs
+ @PageTitle NVARCHAR(255)
+ AS
+ BEGIN
+   SELECT 
+       p.PageID, p.PageTitle, p.PageContent, i.ImagePath,i.PageImageID
+   FROM Page p
+   LEFT JOIN PageImage pi ON p.PageID = pi.PageID
+   LEFT JOIN Image i ON pi.ImageID = i.PageImageID
+    WHERE p.PageTitle = @PageTitle
+ END
+EXEC GetPageWithImagesAboutUs @PageTitle = 'Sobre nosotros';
+
+create procedure sp_DeleteImagePageAboutUs
+@ImageID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Check if the image exists
+    IF EXISTS (SELECT 1 FROM Image WHERE PageImageID = @ImageID)
+    BEGIN
+        -- Delete the image
+        DELETE FROM Image
+        WHERE PageImageID = @ImageID;
+
+        SELECT 'Image deleted successfully.' AS Message;
+    END
+    ELSE
+    BEGIN
+        SELECT 'Image not found.' AS Message;
+    END
+END;
+EXEC DeleteImagePageAboutUs @ImageID = 5;
+create procedure sp_InsertImagePageAboutUs
+@ImagePath NVARCHAR(255),
+@PageID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Insert the new image
+    INSERT INTO Image (ImagePath)
+    VALUES (@ImagePath);
+
+    DECLARE @NewImageID INT = SCOPE_IDENTITY();
+
+    -- Associate the image with the page
+    INSERT INTO PageImage (PageID, ImageID)
+    VALUES (@PageID, @NewImageID);
+
+    SELECT 'Image inserted successfully.' AS Message;
+END;
+drop procedure sp_UpdateTextAboutUs
+create PROCEDURE sp_UpdateTextAboutUs
+@PageID INT,
+@PageContent NVARCHAR(MAX)
+AS
+BEGIN
+    -- Update the page content
+    UPDATE Page
+    SET PageContent = @PageContent
+    WHERE PageID = @PageID;
+END;

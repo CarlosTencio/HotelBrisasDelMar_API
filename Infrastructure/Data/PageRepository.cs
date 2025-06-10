@@ -175,5 +175,122 @@ namespace Infrastructure.Data
                 return false;
             }
         }
+
+        public async Task<List<Page>> GetPageWithImagesAboutUs(string PageTitle)
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            var pageDictionary = new Dictionary<int, Page>();
+
+            await connection.QueryAsync<Page, Image, Page>(
+               "sp_GetPageWithImagesAboutUs",
+               (page, image) =>
+               {
+                   if (!pageDictionary.TryGetValue(page.PageID, out var existingPage))
+                   {
+                       existingPage = page;
+                       existingPage.PageImages = new List<PageImage>();
+                       pageDictionary.Add(existingPage.PageID, existingPage);
+                   }
+
+                   if (image != null && !string.IsNullOrEmpty(image.ImagePath))
+                   {
+                       existingPage.PageImages.Add(new PageImage
+                       {
+                           PageID = page.PageID,
+                           Page = existingPage,
+                           ImageID = image.PageImageID,
+                           Image = image
+                       });
+                   }
+
+                   return existingPage;
+               },
+               param: new { PageTitle = PageTitle },
+               splitOn: "ImagePath",
+               commandType: CommandType.StoredProcedure
+           );
+            return pageDictionary.Values.ToList();
+        }
+
+        public async Task<bool> DeleteImagePageAboutUs(int imageID)
+        {
+            try
+            {
+                using SqlConnection connection = CreateConnection();
+                await connection.OpenAsync();
+
+                using SqlCommand command = new SqlCommand("sp_DeleteImagePageAboutUs", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@ImageID", imageID);
+
+                using SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                if (await reader.ReadAsync())
+                {
+                    var resultMessage = reader["Message"]?.ToString();
+                    return resultMessage == "Image deleted successfully.";
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> InsertImagePageAboutUs(string ImagePath, int pageID)
+        {
+            try
+            {
+                using SqlConnection connection = CreateConnection();
+                await connection.OpenAsync();
+
+                using SqlCommand command = new SqlCommand("sp_InsertImagePageAboutUs", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@ImagePath", ImagePath);
+                command.Parameters.AddWithValue("@PageID", pageID);
+
+                using SqlDataReader reader = await command.ExecuteReaderAsync();
+
+                if (await reader.ReadAsync())
+                {
+                    var resultMessage = reader["Message"]?.ToString();
+                    return resultMessage == "Image inserted successfully.";
+                }
+
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateTextAboutUs(UpdateAboutUs updateAboutUs)
+        {
+            try
+            {
+                using SqlConnection connection = CreateConnection();
+                await connection.OpenAsync();
+
+                using SqlCommand command = new SqlCommand("sp_UpdateTextAboutUs", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@PageID", updateAboutUs.PageID);
+                command.Parameters.AddWithValue("@PageContent", updateAboutUs.PageContent);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+                return rowsAffected > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
