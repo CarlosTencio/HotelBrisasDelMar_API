@@ -108,6 +108,46 @@ namespace Hotel_API.Controllers
                 return StatusCode(500, new { message = "Ocurrió un error interno. Inténtelo más tarde." });
             }
         }
+        [HttpGet("GetPageWithImagesAboutUs")]
+        public async Task<IActionResult> GetPageWithImagesAboutUs(string PageTitle)
+        {
+            var result = await _pageService.GetPageWithImagesAboutUs(PageTitle);
+
+            if (result == null || !result.Any())
+            {
+                return NotFound("No se encontraron datos para el título especificado.");
+            }
+
+            return Ok(result);
+        }
+        [HttpDelete("DeleteImagePageAboutUs")]
+        public async Task<IActionResult> DeleteImagePageAboutUs(int imageID)
+        {
+            bool result= await _pageService.DeleteImagePageAboutUs(imageID);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+        }
+        [HttpPost("InsertImagePageAboutUs")]
+        public async Task<IActionResult> InsertImagePageAboutUs(string ImagePath, int PageID)
+        {
+            bool result = await _pageService.InsertImagePageAboutUs(ImagePath, PageID);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+        }
+        [HttpPut("UpdateTextAboutUs")]
+        public async Task<IActionResult> UpdateTextAboutUs(UpdateAboutUsDTO updateAboutUsDTO)
+        {
+            bool result = await _pageService.UpdateTextAboutUs(updateAboutUsDTO);
+            if (result)
+                return Ok();
+            else
+                return BadRequest();
+        }
+
     }
 
 }
