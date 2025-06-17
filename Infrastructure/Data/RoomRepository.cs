@@ -52,7 +52,30 @@ namespace Infrastructure.Data
                 return rooms.FirstOrDefault();
             }
         }
+        public async Task<List<RoomsAvailable>> ListAvailableRooms(AvailabilityCriterion availabilityCriterion)
+        {
+            using (var connection = CreateConnection())
+            {
+                var parameters = new
+                {
+                    StartTime = availabilityCriterion.EntryDate,
+                    EndTime = availabilityCriterion.DepartureDate,
+                    RoomType = availabilityCriterion.RoomTypeId,
+                };
 
+                var query = "sp_list_available_rooms";
+
+                // Ejecutamos la consulta y obtenemos una lista de RoomsAvailable(un value object)
+                var rooms = await connection.QueryAsync<RoomsAvailable>(
+                    query,
+                    parameters,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+
+                // Si la lista está vacía, retornamos null; sino, retornamos el primer elemento
+                return (List<RoomsAvailable>)rooms;
+            }
+        }
 
         public async Task UpdateRoomStatus(int roomId)
         {
@@ -135,6 +158,8 @@ namespace Infrastructure.Data
                 return result == 1;
             }
         }
+
+      
     }
 
 
