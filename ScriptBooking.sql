@@ -487,3 +487,76 @@ END;
 --FROM Booking b
 --WHERE b.CheckOut = CONVERT(date, GETDATE())
 --  AND b.IsActive = 1;
+
+CREATE PROCEDURE sp_list_available_rooms
+    @RoomType INT = 0, 
+    @StartTime DATETIME,
+    @EndTime DATETIME
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    -- Calcular número de noches
+    DECLARE @NumNights INT;
+    SET @NumNights = DATEDIFF(DAY, @StartTime, @EndTime);
+
+    -- Sumar promociones activas
+    DECLARE @TotalDiscountPercent DECIMAL(10,2);
+    SELECT @TotalDiscountPercent = ISNULL(SUM([Percent]), 0)
+    FROM Promotion
+    WHERE IsActive = 1
+      AND GETDATE() BETWEEN StartDate AND EndDate;
+    
+    -- Verificar si existe una temporada activa
+    DECLARE @SeasonPercent DECIMAL(10,2) = 0;
+    DECLARE @IsHighSeason BIT = 0;
+    DECLARE @HasActiveSeason BIT = 0;
+    
+    SELECT TOP 1 
+        @SeasonPercent = S.[Percent],
+        @IsHighSeason = S.IsHigh,
+        @HasActiveSeason = 1
+    FROM Season S
+    WHERE S.IsActive = 1
+      AND GETDATE() BETWEEN S.StartDate AND S.EndDate;
+
+    -- Consulta principal: devolver todas las habitaciones disponibles
+    SELECT 
+        R.RoomNumber, 
+        RT.RoomTypeName,
+        CAST(@NumNights * RT.Price * 
+            (CASE 
+                WHEN @HasActiveSeason = 1 THEN 
+                    (1 + CASE WHEN @IsHighSeason = 1 THEN @SeasonPercent / 100.0 ELSE -@SeasonPercent / 100.0 END)
+                ELSE 1.0
+            END) *
+            (1 - @TotalDiscountPercent / 100.0) AS INT) AS Price
+
+    FROM Room R
+    INNER JOIN RoomType RT ON RT.RoomTypeId = R.RoomTypeId
+    WHERE R.Status != 1  -- Solo habitaciones no ocupadas/bloqueadas
+      AND (@RoomType =0 OR R.RoomTypeId = @RoomType)  -- Filtro opcional por tipo
+      AND R.RoomId NOT IN (
+          SELECT B.RoomId
+          FROM Booking B
+          WHERE (@StartTime < B.CheckOut AND @EndTime > B.CheckIn)
+          AND NOT (
+            -- Permite reservar si el check-in es el mismo día que otro check-out,
+            -- pero a partir de las 12:00
+            CAST(@StartTime AS DATE) = CAST(B.CheckOut AS DATE) AND 
+            DATEPART(HOUR, @StartTime) >= 12 AND DATEPART(HOUR, B.CheckOut) < 12
+          )
+      )
+    ORDER BY RT.RoomTypeName, R.RoomNumber;  -- Ordenar por tipo y número de habitación
+
+END
+
+
+EXECUTE [dbo].[sp_list_available_rooms] 
+   @RoomType =0
+  ,@StartTime= '2025-06-22'
+  ,@EndTime= '2025-06-25'
+GO
+
+
+select * from room
