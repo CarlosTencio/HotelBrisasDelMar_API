@@ -38,6 +38,28 @@ namespace Hotel_API.Controllers
             }
         }
 
+        [HttpPost("list-roomAvailable")]
+        public async Task<ActionResult<List<RoomsAvailableDTO>>> ListAvailableRooms([FromBody] AvailabilityCriterionDTO availabilityCriterion) {
+            try
+            {
+                var result = await _roomService.ListAvailableRooms(availabilityCriterion);
+
+
+                if (result == null)
+                    return Ok();
+
+                return Ok(result);
+            }
+            catch (ArgumentException ex) 
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, new { error = "Ocurrió un error al verificar disponibilidad." });
+            }
+        }
         [HttpPut("room-status/{id}")]
         public async Task<ActionResult> UpdateRoomStatus(int id)
         {

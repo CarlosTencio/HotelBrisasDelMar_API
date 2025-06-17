@@ -19,6 +19,8 @@ namespace Application.Interfaces
         Task<List<StatusRoomDTO?>> StatusRoom();
 
         Task<bool> UpdateRoomActive(RoomActiveDTO Room);
+        Task<List<RoomsAvailableDTO>> ListAvailableRooms(AvailabilityCriterionDTO availabilityCriterion);
+
 
     }
 }

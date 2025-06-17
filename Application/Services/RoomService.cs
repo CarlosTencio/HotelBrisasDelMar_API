@@ -97,5 +97,29 @@ namespace Application.Services
             return await _roomRepository.UpdateRoomActive(room);
         }
 
+        public async Task<List<RoomsAvailableDTO>> ListAvailableRooms(AvailabilityCriterionDTO availabilityCriterion)
+        {
+
+            var criterion = new AvailabilityCriterion(
+                availabilityCriterion.EntryDate,
+                availabilityCriterion.DepartureDate,
+                availabilityCriterion.RoomTypeId
+            );
+
+     
+            var rooms = await _roomRepository.ListAvailableRooms(criterion);
+
+            if (rooms == null || !rooms.Any())
+                return new List<RoomsAvailableDTO>(); 
+
+            // Mapear cada habitación al DTO
+            return rooms.Select(room => new RoomsAvailableDTO
+            {
+                RoomNumber = room.RoomNumber,
+                RoomType = room.RoomTypeName,
+                Price = room.Price
+
+            }).ToList();
+        }
     }
  }
