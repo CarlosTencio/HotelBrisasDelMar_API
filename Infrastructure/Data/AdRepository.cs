@@ -43,5 +43,66 @@ namespace Infrastructure.Data
 
             return ads.ToList();
         }
+
+        public async Task<List<Ad>> GetAllAdminAd()
+        {
+            using SqlConnection connection = CreateConnection();
+            await connection.OpenAsync();
+
+            var ads = await connection.QueryAsync<Ad>(
+                "sp_GetAdminAds",
+                commandType: CommandType.StoredProcedure
+            );
+
+            return ads.ToList();
+        }
+
+        public async Task<Ad> GetAdById(int id)
+        {
+            using var connection = CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<Ad>(
+                "sp_GetAdById",
+                new { AdID = id },
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<bool> UpdateAd(Ad ad)
+        {
+            using var connection = CreateConnection();
+            var rows = await connection.ExecuteAsync(
+                "sp_UpdateAd",
+                ad,
+                commandType: CommandType.StoredProcedure);
+            return rows > 0;
+        }
+
+        public async Task<bool> DeleteAd(int id)
+        {
+            using var connection = CreateConnection();
+            var rows = await connection.ExecuteAsync(
+                "sp_DeleteAd",
+                new { AdID = id },
+                commandType: CommandType.StoredProcedure);
+            return rows > 0;
+        }
+
+        public async Task<int> CreateAd(Ad ad)
+        {
+            var parameters = new
+            {
+                Name = ad.Name,
+                StartDate = ad.StartDate,
+                EndDate = ad.EndDate,
+                IsActive = ad.IsActive,
+                Img = ad.Img,
+                ImgUrl = ad.ImgUrl
+            };
+
+            using var connection = CreateConnection();
+            return await connection.ExecuteScalarAsync<int>(
+                "sp_CreateAd",
+                parameters,
+                commandType: CommandType.StoredProcedure);
+        }
     }
 }
