@@ -292,5 +292,27 @@ namespace Infrastructure.Data
                 return false;
             }
         }
+
+        public async Task<bool> UpdateContactUs(int pageID, string pageContent)
+        {
+            try
+            {
+                using SqlConnection connection = CreateConnection();
+                await connection.OpenAsync();
+
+                using SqlCommand command = new SqlCommand("sp_updateContactUs", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@PageID", pageID);
+                command.Parameters.AddWithValue("@PageContent", pageContent);
+
+                int rowsAffected = await command.ExecuteNonQueryAsync();
+                return rowsAffected > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
