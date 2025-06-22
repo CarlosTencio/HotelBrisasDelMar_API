@@ -18,5 +18,6 @@ namespace Application.Interfaces
         Task<bool> DeleteImagePageAboutUs(int imageID);
         Task<bool> InsertImagePageAboutUs(string ImagePath, int pageID);
         Task<bool> UpdateTextAboutUs(UpdateAboutUsDTO updateAboutUsDTO);
+        Task<bool> UpdateContactUs(int pageID, string pageContent);
     }
 }

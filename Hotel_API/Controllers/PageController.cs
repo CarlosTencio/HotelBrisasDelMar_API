@@ -148,6 +148,32 @@ namespace Hotel_API.Controllers
                 return BadRequest();
         }
 
+        [HttpPut("UpdateContactUs")]
+        public async Task<IActionResult> UpdateContactUs(UpdateContactUsDTO updateContactUsDTO /*int pageID, string pageContentint pageID, string phone1, string phone2, string poBox, string email, string facebook, string instagram*/)
+        {
+            try
+            {
+                bool result = await _pageService.UpdateContactUs(updateContactUsDTO.PageID, updateContactUsDTO.PageContent);
+                if (result)
+                {
+                    return Ok(new { message = "Contacto actualizado correctamente." });
+                }
+                return NotFound(new { message = "Registro de contacto no encontrado." });
+
+                //string content = $"{phone1};{phone2};{poBox};{email};{facebook};{instagram}";
+                //bool result = await _pageService.UpdateFacility(pageID, content, null); // null porque ContactUs no usa imagePath
+                //if (result)
+                //{
+                //    return Ok(new { message = "Contacto actualizado correctamente." });
+                //}
+                //return NotFound(new { message = "Registro de contacto no encontrado." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Ocurrió un error interno. Inténtelo más tarde." });
+            }
+        }
+
     }
 
 }

@@ -99,5 +99,12 @@ namespace Application.Services
             };
             return await _pageRepository.UpdateTextAboutUs(updateAboutUs);
         }
+
+        public async Task<bool> UpdateContactUs(int pageID, string pageContent)
+        {
+            bool result = await _pageRepository.UpdateContactUs(pageID, pageContent);
+            return result;
+        }
+
     }
 }
