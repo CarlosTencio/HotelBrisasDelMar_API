@@ -47,11 +47,10 @@ app.UseCors(options =>
 });
 
 // Configurar Swagger en entorno de desarrollo
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 // Configurar middleware
 app.UseAuthorization();
