@@ -64,9 +64,18 @@ namespace Infrastructure.Data
         public async Task<int> CreatePromotion(Promotion promotion)
         {
             using var connection = CreateConnection();
+
             return await connection.ExecuteScalarAsync<int>(
                 "CreatePromotion",
-                promotion,
+                new
+                {
+                    promotion.PromotionName,
+                    promotion.StartDate,
+                    promotion.EndDate,
+                    promotion.IsActive,
+                    promotion.Percent,
+                    promotion.Img
+                },
                 commandType: CommandType.StoredProcedure);
         }
 
